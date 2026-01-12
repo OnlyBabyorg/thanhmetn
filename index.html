@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Trắc nghiệm KHVLĐC - Full Data</title>
+    <style>
+      :root {
+        --bg: #f0f9ff;
+        --card-bg: #ffffff;
+        --primary: #0284c7;
+        --accent: #f59e0b;
+        --text: #1f2937;
+        --correct: #10b981;
+        --wrong: #ef4444;
+      }
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 800px;
+        width: 100%;
+      }
+      h1 {
+        text-align: center;
+        color: var(--primary);
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+      .sub {
+        text-align: center;
+        color: #6b7280;
+        margin-bottom: 20px;
+        font-size: 14px;
+      }
+      .card {
+        background: var(--card-bg);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border-top: 5px solid var(--primary);
+      }
+      .stats {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        color: #6b7280;
+        margin-bottom: 20px;
+      }
+      .question {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 25px;
+        line-height: 1.5;
+        color: #111827;
+      }
+      .options {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      @media (min-width: 600px) {
+        .options {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      button {
+        background: #f9fafb;
+        border: 2px solid #e5e7eb;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: left;
+        cursor: pointer;
+        font-size: 16px;
+        color: var(--text);
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+      }
+      button:hover:not(:disabled) {
+        border-color: var(--primary);
+        background: #e0f2fe;
+      }
+      button:disabled {
+        opacity: 0.9;
+        cursor: default;
+      }
+      .correct {
+        background: #d1fae5 !important;
+        border-color: var(--correct) !important;
+        color: #064e3b !important;
+        font-weight: bold;
+      }
+      .wrong {
+        background: #fee2e2 !important;
+        border-color: var(--wrong) !important;
+        color: #991b1b !important;
+      }
+      .feedback {
+        margin-top: 25px;
+        padding: 20px;
+        background: #fffbeb;
+        border-radius: 8px;
+        border-left: 5px solid var(--accent);
+        display: none;
+      }
+      .nav-btn {
+        width: 100%;
+        background: var(--primary);
+        color: white;
+        border: none;
+        font-weight: bold;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .nav-btn:hover {
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Ôn Tập KHVLĐC</h1>
+      <div class="sub">design by pham van thanh</div>
+
+      <div class="card">
+        <div class="stats">
+          <span>Câu: <span id="qCount">1/0</span></span>
+          <span>Điểm: <span id="score">0</span></span>
+        </div>
+
+        <div class="question" id="qText">Loading...</div>
+        <div class="options" id="optContainer"></div>
+
+        <div class="feedback" id="feedback">
+          <div
+            style="font-weight: bold; color: var(--accent); margin-bottom: 5px"
+          >
+            💡 Giải thích:
+          </div>
+          <div id="explain"></div>
+        </div>
+
+        <button
+          class="nav-btn"
+          id="nextBtn"
+          onclick="nextQ()"
+          style="display: none"
+        >
+          Câu tiếp theo ➜
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const DATA = [
+        // --- CÂU 1 ĐẾN 7 ---
+        {
+          q: "1-Liên kết kim loại trong vật liệu là liên kết được tạo ra:",
+          o: [
+            "a-Giữa các ion dương và các điện tử",
+            "b-Giữa các điện tử tự do và các ion dương",
+            "c-Giữa các proton và điện tử tự do",
+            "d-Giữa các nguyên tử trong kim loại",
+          ],
+          a: 1, // Chọn b (Chính xác nhất là điện tử TỰ DO và ion dương nút mạng)
+          e: "Liên kết kim loại là lực hút tĩnh điện giữa các ion dương ở nút mạng và khí quyển điện tử tự do.",
+        },
+        {
+          q: "2-Liên kết ion trong vật liệu là do:",
+          o: [
+            "a-Tương tác giữa các ion tạo thành",
+            "b-Lực hút giữa các ion tạo thành",
+            "c-Lực hút tĩnh điện giữa các ion dương và ion âm",
+            "d-Lực hút và lực đẩy giữa các ion",
+          ],
+          a: 2, // c
+          e: "Liên kết ion bản chất là lực hút tĩnh điện giữa các ion mang điện trái dấu (âm và dương).",
+        },
+        {
+          q: "3-Trong mẫu đồng (Cu) nguyên chất có các dạng liên kết sau:",
+          o: [
+            "a-Kim loại và đồng hóa trị",
+            "b-ion và đồng hóa trị",
+            "c-Kim loại và liên kết ion",
+            "d-Kim loại",
+          ],
+          a: 3, // d
+          e: "Đồng (Cu) là kim loại nguyên chất nên chỉ tồn tại liên kết kim loại.",
+        },
+        {
+          q: "4-Mạng tinh thể là:",
+          o: [
+            "a-Mạng của các nguyên tử trong tinh thể",
+            "b-Mô hình không gian mô tả sắp xếp của chất điểm trong tinh thể",
+            "c-Mô hình mô tả quy luật hình học của tinh thể",
+            "d-Mạng của các nguyên tử hoặc phân tử trong vật liệu",
+          ],
+          a: 1, // b
+          e: "Mạng tinh thể là mô hình không gian mô tả quy luật sắp xếp tuần hoàn của các chất điểm.",
+        },
+        {
+          q: "5-Ô cơ sở của mạng tinh thể là:",
+          o: [
+            "a-Khối thể tích nhỏ nhất có cách sắp xếp chất điểm đại diện cho mạng tinh thể",
+            "b-Đơn vị thể tích của mạng tinh thể",
+            "c-Khối thể tích nhỏ nhất của mạng tinh thể",
+            "d-Một phần nhỏ bất kỳ của mạng",
+          ],
+          a: 0, // a
+          e: "Ô cơ sở là phần nhỏ nhất mang đầy đủ tính chất đối xứng và cấu trúc đặc trưng của toàn mạng.",
+        },
+        {
+          q: "6-Các kiểu mạng thường gặp trong vật liệu kim loại là:",
+          o: [
+            "a-Lập phương tâm mặt và sáu phương xếp chặt",
+            "b-Lập phương tâm mặt, lập phương tâm khối và sáu phương xếp chặt",
+            "c-Lập phương tâm mặt, lập phương đơn giản và sáu phương",
+            "d-Chính phương, lập phương tâm mặt và lập phương tâm khối",
+          ],
+          a: 1, // b
+          e: "Ba kiểu mạng phổ biến nhất của kim loại là: A1 (LPTM), A2 (LPTK) và A3 (Sáu phương xếp chặt).",
+        },
+        {
+          q: "7-Sắt (Fe) ở nhiệt độ trong phòng có kiểu mạng tinh thể:",
+          o: [
+            "a- Lập phương tâm mặt",
+            "b- Chính phương tâm khối",
+            "c- Lập phương tâm khối",
+            "d- Sáu phương xếp chặt",
+          ],
+          a: 2, // c
+          e: "Ở nhiệt độ thường, Sắt (Fe alpha) có cấu trúc Lập phương tâm khối (A2/BCC)[cite: 31].",
+        },
+
+        // --- CÂU 26 ĐẾN 40 ---
+        {
+          q: "26-Các tính chất cơ lý hóa của đơn tinh thể theo các phương khác nhau là không giống nhau. Tính chất này gọi là:",
+          o: [
+            "a-Tính đẳng hướng",
+            "b-Tính dị hướng",
+            "c-Tính vô hướng",
+            "d-Tính dị trục",
+          ],
+          a: 1, // b
+          e: "Dị hướng (Anisotropy) là hiện tượng tính chất vật liệu thay đổi tùy theo phương đo[cite: 97].",
+        },
+        {
+          q: "27 – Đặc điểm cơ tính quan trọng nhất của vật liệu kim loại là:",
+          o: [
+            "a- Độ bền thấp, độ dẻo cao",
+            "b- Độ dai phá hủy cao",
+            "c- Độ bền và độ cứng cao",
+            "d- Độ cứng và tính chịu mài mòn cao",
+          ],
+          a: 2, // c
+          e: "Kim loại thường được đặc trưng bởi sự kết hợp tốt giữa độ bền và độ cứng (so với polyme) và độ dẻo (so với gốm)[cite: 103].",
+        },
+        {
+          q: "28-Liên kết Van der Waals thường gặp nhất trong vật liệu nào:",
+          o: ["a- kim loại", "b- ceramic", "c- polyme", "d- compozit"],
+          a: 2, // c
+          e: "Liên kết yếu Van der Waals thường liên kết các mạch phân tử polymer với nhau[cite: 108].",
+        },
+        {
+          q: "29- Đặc điểm chung của vật liệu có liên kết ion và đồng hóa trị:",
+          o: [
+            "a- độ bền cao, độ cứng cao",
+            "b- độ dai phá hủy cao",
+            "c- cứng, giòn và nhiệt độ chảy cao",
+            "d- độ bền thấp, nhiệt độ chảy thấp",
+          ],
+          a: 2, // c
+          e: "Đây là đặc điểm của vật liệu Gốm (Ceramic): Rất cứng, nhiệt độ nóng chảy cao nhưng rất giòn[cite: 113].",
+        },
+        {
+          q: "30- Cấu trúc tinh thể thường gặp nhất trong vật liệu nào:",
+          o: [
+            "a- polyme và thủy tinh thường",
+            "b- ceramic và polyme",
+            "c- kim loại",
+            "d- tất cả các loại vật liệu",
+          ],
+          a: 2, // c
+          e: "Kim loại hầu như luôn ở trạng thái tinh thể. Polyme thường bán tinh thể, thủy tinh là vô định hình[cite: 118].",
+        },
+        {
+          q: "31- Trong các mạng tinh thể kim loại thường gặp, số nguyên tử trong 1 ô cơ sở của mạng nào lớn nhất:",
+          o: [
+            "a- Lập phương tâm mặt (A1)",
+            "b- Như nhau cả",
+            "c- Lập phương tâm khối (A2)",
+            "d- Sáu phương xếp chặt (A3)",
+          ],
+          a: 0, // a
+          e: "Mạng A1 (FCC) có 4 nguyên tử/ô. Mạng A2 (BCC) có 2 nguyên tử/ô. (Lưu ý: Nếu xét ô lục giác là 6, nhưng ô cơ sở nguyên thủy lục giác là 2. Trong các bài tập so sánh A1/A2 thì A1 lớn hơn) [cite: 121].",
+        },
+        {
+          q: "32- Trong mạng lập phương tâm khối (A2), các nguyên tử xếp dày đặc nhất theo phương và mặt nào:",
+          o: [
+            "a- hệ phương <111> và hệ mặt (110)",
+            "b- hệ phương <2110> và hệ mặt (0001)",
+            "c- hệ phương <110> và hệ mặt (111)",
+            "d- hệ phương <1120> và hệ mặt (1211)",
+          ],
+          a: 0, // a
+          e: "Mạng BCC (A2): Phương xếp chặt là đường chéo khối <111>, mặt mật độ cao nhất là {110}[cite: 126].",
+        },
+        {
+          q: "33- Trong mạng lập phương tâm mặt (A1), các nguyên tử xếp dày đặc nhất theo phương và mặt nào:",
+          o: [
+            "a- hệ phương <111> và hệ mặt (110)",
+            "b- hệ phương <2110> và hệ mặt (0001)",
+            "c- hệ phương <110> và hệ mặt (111)",
+            "d- hệ phương <1120> và hệ mặt (1211)",
+          ],
+          a: 2, // c
+          e: "Mạng FCC (A1): Phương xếp chặt là đường chéo mặt <110>, mặt xếp chặt là {111}[cite: 133].",
+        },
+        {
+          q: "34- Lỗ hổng lớn nhất trong mạng tinh thể A1 (Lập phương tâm mặt) là loại:",
+          o: ["a- 4 mặt", "b- 8 mặt", "c- như nhau", "d- tùy theo kim loại"],
+          a: 1, // b
+          e: "Trong mạng FCC (A1), lỗ hổng bát diện (8 mặt) lớn hơn lỗ hổng tứ diện (4 mặt)[cite: 135].",
+        },
+        {
+          q: "34- Lỗ hổng lớn nhất trong mạng tinh thể A2 (Lập phương tâm khối) là loại:",
+          o: ["a- 4 mặt", "b- 8 mặt", "c- như nhau", "d- tùy theo kim loại"],
+          a: 0, // a
+          e: "Trong mạng BCC (A2), lỗ hổng tứ diện (4 mặt) cho phép chứa nguyên tử tạp chất dễ hơn lỗ hổng 8 mặt[cite: 136].",
+        },
+        {
+          q: "35- Mạng tinh thể A1 có mật độ xếp và số nguyên tử trong 1 ô cơ sở là:",
+          o: ["a-68% & 2", "b-74% & 4", "c-68% & 4", "d-74% & 2"],
+          a: 1, // b
+          e: "Mạng A1 (FCC): Mật độ xếp chặt 74%, số nguyên tử n=4[cite: 137].",
+        },
+        {
+          q: "36- Mạng tinh thể A2 có mật độ xếp và số nguyên tử trong 1 ô cơ sở là:",
+          o: ["a-68% & 2", "b-74% & 4", "c-68% & 4", "d-74% & 2"],
+          a: 0, // a
+          e: "Mạng A2 (BCC): Mật độ xếp 68%, số nguyên tử n=2[cite: 138].",
+        },
+        {
+          q: "37- Lệch biên có ảnh hưởng quan trọng nhất tới:",
+          o: [
+            "a-độ bền",
+            "b-quá trình kết tinh",
+            "c-điện trở",
+            "d-nhiệt độ chảy",
+          ],
+          a: 0, // a
+          e: "Sai lệch đường (lệch) quyết định cơ tính (độ bền, độ dẻo) của vật liệu[cite: 139].",
+        },
+        {
+          q: "38- Lệch xoắn có ảnh hưởng quan trọng nhất tới:",
+          o: [
+            "a-độ bền",
+            "b-quá trình kết tinh",
+            "c-điện trở",
+            "d-nhiệt độ chảy",
+          ],
+          a: 0, // a
+          e: "Tương tự lệch biên, lệch xoắn ảnh hưởng chủ yếu đến độ bền và biến dạng dẻo[cite: 140].",
+        },
+        {
+          q: "39- Số phối trí của mạng tinh thể A1 (Lập phương tâm mặt) là:",
+          o: ["a-4", "b-8", "c-12", "d-6"],
+          a: 2, // c
+          e: "Mạng A1 có số phối trí (số nguyên tử lân cận gần nhất) là 12[cite: 141].",
+        },
+        {
+          q: "40- Số phối trí của mạng tinh thể A2 (Lập phương tâm khối) là:",
+          o: ["a-4", "b-8", "c-12", "d-6"],
+          a: 1, // b
+          e: "Mạng A2 có số phối trí là 8[cite: 142].",
+        },
+        {
+          q: "1-Mầm tự sinh (mầm đồng thể) khi chuyển pha là:",
+          o: [
+            "a-Mầm được hình thành trong lòng pha mẹ",
+            "b-Mầm được hình thành và lớn lên trong lòng pha mẹ",
+            "c-Mầm được hình thành từ các nguyên tử của pha mẹ",
+            "d-Mầm có thành phần giống như pha mẹ",
+          ],
+          a: 0, // a
+          e: "Mầm tự sinh sinh ra ngẫu nhiên ngay trong lòng pha mẹ đồng nhất.",
+        },
+        {
+          q: "2-Mầm ký sinh (mầm dị thể) khi chuyển pha là:",
+          o: [
+            "a-Mầm lớn lên nhờ pha khác",
+            "b-Mầm được hình thành trên bề mặt pha rắn",
+            "c-Mầm được hình thành và lớn lên trên bề mặt pha rắn có sẵn",
+            "d-Mầm dạng chỏm cầu trên bề mặt vật rắn",
+          ],
+          a: 2, // c
+          e: "Mầm ký sinh bám vào các tạp chất hoặc bề mặt rắn có sẵn để giảm năng lượng.",
+        },
+        {
+          q: "3-Đối với các vật liệu kim loại thông dụng như Fe, Al, Cu thì hợp kim của chúng được dùng rộng rãi vì:",
+          o: [
+            "a-Chúng có độ bền, độ cứng, và độ dẻo cao",
+            "b-Chúng có tính công nghệ và tính tổng hợp cao",
+            "c-Chúng có độ bền, độ cứng và khả năng gia công cao",
+            "d-Chế tạo và gia công dễ hơn",
+          ],
+          a: 1, // b
+          e: "Hợp kim thường có cơ tính tổng hợp tốt hơn và tính công nghệ (đúc, cắt gọt...) tốt hơn kim loại nguyên chất.",
+        },
+        {
+          q: "4-Thép là vật liệu có khả năng biến dạng dẻo tốt vì:",
+          o: [
+            "a-Ở trạng thái nóng không phụ thuộc vào thành phần cacbon",
+            "b-Ở trạng thái nguội không phụ thuộc vào thành phần cacbon",
+            "c-Ở trạng thái nóng phụ thuộc vào thành phần cacbon",
+            "d-Ở trạng thái nóng lẫn trạng thái nguội không phụ thuộc vào thành phần cacbon",
+          ],
+          a: 2, // c
+          e: "Thép biến dạng dẻo tốt nhất ở trạng thái nóng (vùng Austenit), nhưng khả năng này giảm khi hàm lượng Carbon tăng.",
+        },
+        {
+          q: "5-Kết tinh lại trong vật liệu tinh thể đã qua biến dạng dẻo là gì?",
+          o: [
+            "a-Là quá trình sinh và phát triển các hạt tinh thể mới ít khuyết tật",
+            "b-Là quá trình chuyển sang cấu trúc kim lọai mới",
+            "c-Là một dạng chuyển pha ở trạng thái rắn",
+            "d-Là sự tiết ra pha tinh thể từ tổ chức nền",
+          ],
+          a: 0, // a
+          e: "Kết tinh lại là quá trình nung nóng để sinh ra các hạt mới không chứa ứng suất dư.",
+        },
+        {
+          q: "6-Thế nào là hợp kim?",
+          o: [
+            "a-Là vật thể được tạo thành bằng cách nấu chảy từ nhiều kim loại",
+            "b-Là hợp chất giữa nhiều nguyên tố kim loại",
+            "c-Là hợp chất giữa kim loại và á kim",
+            "d-Là hợp chất nhiều nguyên tố với các tính chất đặc trưng của kim loại",
+          ],
+          a: 3, // d
+          e: "Hợp kim là hệ nhiều nguyên tố (kim loại + kim loại/á kim) nhưng vẫn giữ tính chất kim loại.",
+        },
+        {
+          q: "7-Các cấu tử (nguyên) của một hệ hợp kim hoặc hợp chất có thể là:",
+          o: [
+            "a-Các kim loại hoặc á kim",
+            "b-Các nguyên tố hóa học",
+            "c-Các nguyên tố hóa học hoặc hợp chất hóa học ổn định",
+            "d-Các kim loại và hợp chất của chúng",
+          ],
+          a: 2, // c
+          e: "Cấu tử là thành phần độc lập nhỏ nhất, có thể là nguyên tố hoặc hợp chất hóa học bền vững.",
+        },
+        {
+          q: "8-Dung dịch rắn thay thế được hiểu là dung dịch rắn khi:",
+          o: [
+            "a-Nguyên tử các chất thay thế lẫn nhau trong mạng",
+            "b-Nguyên tử chất tan thay thế vị trí nút mạng trong mạng dung môi",
+            "c-Nguyên tử chất tan nằm trong mạng tinh thể dung môi",
+            "d-Nguyên tử chất tan thay thế một số vị trí nút mạng trong mạng dung môi",
+          ],
+          a: 1, // b
+          e: "Nguyên tử chất tan có kích thước tương đương và thay thế vị trí nút mạng của dung môi.",
+        },
+        {
+          q: "9-Dung dịch rắn xen kẽ là:",
+          o: [
+            "a-Pha rắn trong đó nguyên tử chất tan nằm ở các lỗ hổng trong mạng dung môi",
+            "b-Dung dịch rắn trong đó nguyên tử dung môi và chất tan nằm xen kẽ nhau",
+            "c-Dung dịch rắn trong đó nguyên tử chất tan nằm xen kẽ trong mạng dung môi",
+            "d-Pha rắn trong đó các loại nguyên tử nằm xen kẽ lẫn nhau",
+          ],
+          a: 0, // a
+          e: "Nguyên tử chất tan nhỏ (C, N, H...) chui vào lỗ hổng giữa các nguyên tử dung môi.",
+        },
+        {
+          q: "11-Dung dịch rắn hòa tan vô hạn được hiểu là:",
+          o: [
+            "a-Dung dịch rắn có thể hòa tan vô hạn vào chất khác",
+            "b-Dung dịch rắn có thể chứa một lượng bất kỳ nguyên tố hòa tan",
+            "c-Dung dịch rắn có hằng số mạng không thay đổi khi có chất tan",
+            "d-Dung dịch rắn khi nguyên tố hòa tan nằm ở vị trí bất kỳ trong mạng",
+          ],
+          a: 1, // b
+          e: "Hòa tan vô hạn nghĩa là tỷ lệ chất tan có thể từ 0% đến 100% mà vẫn giữ nguyên một kiểu mạng.",
+        },
+        {
+          q: "12-Khả năng hòa tan vô hạn có thể có ở:",
+          o: [
+            "a-Tất cả các loại dung dịch rắn",
+            "b-Dung dịch rắn xen kẽ và thay thế",
+            "c-Dung dịch rắn thay thế",
+            "d-Dung dịch rắn xen kẽ",
+          ],
+          a: 2, // c
+          e: "Chỉ dung dịch rắn thay thế mới có khả năng hòa tan vô hạn (khi cùng kiểu mạng, bán kính gần nhau...).",
+        },
+        {
+          q: "13- Khả năng hòa tan của dung dịch rắn xen kẽ có thể là:",
+          o: [
+            "a-Vô hạn hoặc có hạn",
+            "b-Vô hạn",
+            "c-Có hạn",
+            "d-Không xác định được",
+          ],
+          a: 2, // c
+          e: "Dung dịch rắn xen kẽ luôn có hạn vì số lượng lỗ hổng trong mạng tinh thể là có hạn.",
+        },
+        {
+          q: "14-Khi hòa tan một nguyên tố khác vào mạng tinh thể của kim lọai thì dung dịch rắn được tạo thành có xu thế:",
+          o: [
+            "a-Độ bền tăng, độ cứng tăng, độ dẻo giảm",
+            "b- Độ bền tăng, độ cứng tăng, độ dẻo tăng",
+            "c- Độ bền giảm, độ cứng giảm, độ dẻo giảm",
+            "d- Độ bền tăng, độ cứng giảm, độ dẻo giảm",
+          ],
+          a: 0, // a
+          e: "Hóa bền dung dịch rắn: Tăng bền, tăng cứng nhưng làm giảm độ dẻo.",
+        },
+        {
+          q: "15-Tổ chức tế vi của dung dịch rắn đồng nhất giữa 2 cấu tử A và B gồm:",
+          o: [
+            "a-Các hạt tinh thể A và B xen kẽ nhau",
+            "b-Các hạt tinh thể đồng pha",
+            "c-Pha B phân bố trong các tinh thể pha A",
+            "d-Pha A phân bố trong các tinh thể pha B",
+          ],
+          a: 1, // b
+          e: "Dung dịch rắn đồng nhất chỉ có 1 pha duy nhất.",
+        },
+        {
+          q: "16-Dung dịch rắn của chất tan B trong dung môi A có kiểu mạng tinh thể:",
+          o: [
+            "a-Của chất tan B",
+            "b-Khác A và khác B",
+            "c-Của dung môi A",
+            "d-Trung gian giữa A và B",
+          ],
+          a: 2, // c
+          e: "Dung dịch rắn luôn giữ kiểu mạng của dung môi.",
+        },
+        {
+          q: "17-So với Fe alpha, Fe gamma hòa tan được nhiều cacbon vì:",
+          o: [
+            "a- Fe gamma tồn tại ở nhiệt độ cao nên cacbon dễ khuếch tán",
+            "b- Fe gamma tồn tại ở nhiệt độ cao nên mạng có nhiều nút trống",
+            "c- Fe gamma có mật độ kém dày đặc hơn nên nhiều lỗ hổng hơn",
+            "d-Fe gamma có mật độ dày đặc hơn nhưng có những lỗ hổng to hơn",
+          ],
+          a: 3, // d
+          e: "Mạng FCC (Fe gamma) xếp chặt hơn nhưng lỗ hổng bát diện lớn hơn BCC (Fe alpha), chứa được C.",
+        },
+        {
+          q: "18- Các pha xen kẽ Cacbit, Nitrit, Borit thường được sử dụng để chế tạo:",
+          o: [
+            "a-Chi tiết máy chịu lực",
+            "b-Bệ máy chịu lực",
+            "c-Chi tiết chịu va đập",
+            "d-Dụng cụ cắt gọt và khuôn mẫu",
+          ],
+          a: 3, // d
+          e: "Các pha này có độ cứng rất cao (hợp kim cứng), dùng làm dao cắt.",
+        },
+        {
+          q: "19- Pha xen kẽ là pha được tạo thành giữa:",
+          o: [
+            "a-Kim loại M và á kim X với cấu trúc độc lập theo nguyên lý xen kẽ",
+            "b-Kim loại M và á kim X theo nguyên lý xen kẽ",
+            "c-Kim loại M và á kim X với thành phần xác định",
+            "d-Kim loại M và á kim X theo kiểu dung dịch rắn xen kẽ",
+          ],
+          a: 2, // c
+          e: "Pha xen kẽ (Hợp chất hóa học) có thành phần và cấu trúc tinh thể xác định, khác với pha nền.",
+        },
+        {
+          q: "20- Pha Hume-Rothery (hợp chất điện tử) là pha được tạo nên:",
+          o: [
+            "a-Giữa 2 nguyên tố theo quy tắc nồng độ điện tử",
+            "b-Giữa 2 kim lọai theo quy tắc nồng độ điện tử",
+            "c-Giữa 2 nguyên tố có điện tử tự do",
+            "d-Giữa kim lọai và 1 nguyên tố khác có nồng độ điện tử xác định",
+          ],
+          a: 0, // a
+          e: "Pha điện tử được xác định bởi tỷ lệ giữa số điện tử hóa trị và số nguyên tử.",
+        },
+        {
+          q: "21- Các hợp chất cacbit, nitrit của các kim loại (ví dụ TiC, WC) thông thường là:",
+          o: [
+            "a-Các pha hợp chất hóa học hóa trị",
+            "b-Các pha điện tử",
+            "c-Các pha xen kẽ",
+            "d-Hợp chất ion",
+          ],
+          a: 2, // c
+          e: "TiC, WC là các pha xen kẽ điển hình (Hägg phases).",
+        },
+        {
+          q: "22-Phản ứng cùng tinh là phản ứng khi:",
+          o: [
+            "a-Từ pha lỏng tạo ra 2 pha rắn khác nhau",
+            "b-Từ 1 pha rắn tạo ra 2 pha rắn khác nhau",
+            "c-Từ 1 pha lỏng cùng lúc tạo ra 2 hay nhiều pha rắn khác nhau",
+            "d-Từ 1 pha rắn tạo ra 2 pha lỏng",
+          ],
+          a: 2, // c
+          e: "Cùng tinh (Eutectic): Lỏng -> Rắn 1 + Rắn 2.",
+        },
+        {
+          q: "23-Phản ứng cùng tích được hiểu là phản ứng khi:",
+          o: [
+            "a-Từ 1 pha rắn tạo thành 2 pha rắn khác",
+            "b-Từ 1 pha rắn tạo thành cùng lúc 2 hay nhiều pha rắn khác",
+            "c-Từ 1 pha lỏng cùng lúc tạo thành 2 hoặc nhiều pha rắn khác",
+            "d-Từ 1 pha rắn và 1 pha lỏng tạo thành 2 pha rắn khác",
+          ],
+          a: 1, // b
+          e: "Cùng tích (Eutectoid): Rắn 1 -> Rắn 2 + Rắn 3.",
+        },
+
+        // --- GIẢN ĐỒ FE-C ---
+        {
+          q: "27-Hợp kim Fe-C có thành phần 4,1%C gọi là:",
+          o: [
+            "a-Gang trước cùng tinh",
+            "b-Gang cùng tinh",
+            "c-Thép trước cùng tích",
+            "d-Thép sau cùng tích",
+          ],
+          a: 0, // a
+          e: "Dưới 4.3%C là Gang trước cùng tinh (Hypoeutectic).",
+        },
+        {
+          q: "28-Hợp kim Fe-C có thành phần 4,8%C gọi là:",
+          o: [
+            "a-Gang trước cùng tinh",
+            "b-Gang sau cùng tinh",
+            "c-Thép trước cùng tích",
+            "d-Thép sau cùng tích",
+          ],
+          a: 1, // b
+          e: "Trên 4.3%C là Gang sau cùng tinh (Hypereutectic).",
+        },
+        {
+          q: "29-Hợp kim Fe-C có thành phần 4,3%C gọi là:",
+          o: [
+            "a-Gang trước cùng tinh",
+            "b-Gang cùng tinh",
+            "c-Thép trước cùng tích",
+            "d-Thép sau cùng tích",
+          ],
+          a: 1, // b
+          e: "4.3%C là điểm cùng tinh (Eutectic) của hệ Fe-C.",
+        },
+        {
+          q: "30-Trong hợp kim Fe-C, pha Ferit là:",
+          o: [
+            "a-Dung dịch rắn của C trong Fe gamma",
+            "b- Dung dịch rắn của C trong Fe alpha",
+            "c- Dung dịch rắn của C trong Fe beta",
+            "d-Hợp chất của C và Fe",
+          ],
+          a: 1, // b
+          e: "Ferit = C hòa tan trong Fe alpha (BCC).",
+        },
+        {
+          q: "31-Trong hợp kim Fe-C, pha auxtenit (A) là dung dịch rắn của C trong:",
+          o: ["a- Fe alpha", "b- Fe beta", "c- Fe gamma", "d-Fe delta"],
+          a: 2, // c
+          e: "Auxtenit = C hòa tan trong Fe gamma (FCC).",
+        },
+        {
+          q: "32- Trong hợp kim Fe-C, pha Xêmentit (Xê) là:",
+          o: ["a-Fe3C", "b-Fe2C", "c-FeC", "d-FexCy"],
+          a: 0, // a
+          e: "Xêmentit là hợp chất Fe3C.",
+        },
+        {
+          q: "33-Tổ chức péclit trong hợp kim Fe-C là:",
+          o: [
+            "a-Hỗn hợp cùng tích của ferit và auxtenit",
+            "b-Hỗn hơp cùng tinh của ferit và xêmentit",
+            "c-Hỗn hợp cơ học của ferit và xêmentit",
+            "d-Hỗn hợp cùng tích của ferit và xêmentit",
+          ],
+          a: 3, // d
+          e: "Péclit là sản phẩm cùng tích (ferit + xêmentit).",
+        },
+        {
+          q: "34-Tổ chức lêđêburit trên nhiệt độ cùng tích trong hợp kim Fe–C là:",
+          o: [
+            "a-Hỗn hợp cơ học của auxtenit và xêmentit",
+            "b-Hỗn hợp cùng tinh của auxtenit và xêmentit",
+            "c-Hỗn hợp cơ học của ferit và xêmentit",
+            "d-Hỗn hợp cùng tinh của auxtenit và ferit",
+          ],
+          a: 1, // b
+          e: "Lêđêburit (nhiệt độ cao) là hỗn hợp cùng tinh của Auxtenit và Xêmentit.",
+        },
+        {
+          q: "35-Phản ứng cùng tinh của hợp kim Fe-C xẩy ra ở nhiệt độ:",
+          o: ["a-1300°C", "b-1247°C", "c-1147°C", "d-927°C"],
+          a: 2, // c
+          e: "1147°C là đường cùng tinh.",
+        },
+        {
+          q: "36- Phản ứng cùng tích của hợp kim Fe-C xẩy ra ở nhiệt độ:",
+          o: ["a-827°C", "b-727°C", "c-927°C", "d-700°C"],
+          a: 1, // b
+          e: "727°C là đường cùng tích (biến đổi Austenit thành Péclit).",
+        },
+        {
+          q: "37- Phản ứng cùng tích trong hợp kim Fe-C xẩy ra như sau:",
+          o: [
+            "a- A -> F + Xe",
+            "b- F -> A + Xe",
+            "c- L -> F + Xe",
+            "d- A -> L + Xe",
+          ],
+          a: 0, // a (Giả định đáp án chuẩn vì đề bài thiếu text)
+          e: "Cùng tích: Auxtenit phân rã thành Ferit và Xêmentit.",
+        },
+        {
+          q: "38- Phản ứng cùng tinh trong hợp kim Fe-C xẩy ra như sau:",
+          o: [
+            "a- L -> A + Xe",
+            "b- L -> F + Xe",
+            "c- A -> F + Xe",
+            "d- L -> A + F",
+          ],
+          a: 0, // a (Giả định đáp án chuẩn vì đề bài thiếu text)
+          e: "Cùng tinh: Lỏng phân rã thành Auxtenit và Xêmentit.",
+        },
+        {
+          q: "39 -Theo tổ chức tế vi thì thép là hợp kim Fe-C:",
+          o: [
+            "a-Có tổ chức peclit",
+            "b-Có peclit và không có lêđêburit",
+            "c-Không có lêđêburit",
+            "d-Có peclit và ferit",
+          ],
+          a: 2, // c
+          e: "Thép không có tổ chức Lêđêburit (trừ thép hợp kim cao), Gang thì có.",
+        },
+        {
+          q: "40-Theo tổ chức tế vi thì gang là hợp kim Fe-C:",
+          o: [
+            "a-Có peclit và lêđêburit",
+            "b-Có Xêmentit và Lêđêburit",
+            "c-Có tổ chức lêđêburit",
+            "d-Có lêđêburit và không có peclit",
+          ],
+          a: 2, // c
+          e: "Đặc trưng của Gang trắng là sự xuất hiện của Lêđêburit.",
+        },
+        {
+          q: "41-Theo tổ chức tế vi thép cacbon với 0,8%C được gọi là thép:",
+          o: [
+            "a-Sau cùng tích",
+            "b-Cùng tích",
+            "c-Trước cùng tích",
+            "d-Cùng tinh",
+          ],
+          a: 1, // b
+          e: "0.8%C là điểm cùng tích (Péclit).",
+        },
+        {
+          q: "42- Theo tổ chức tế vi thép cacbon < 0,8%C được gọi là thép:",
+          o: [
+            "a-Sau cùng tích",
+            "b-Trước cùng tinh",
+            "c-Trước cùng tích",
+            "d-Sau cùng tinh",
+          ],
+          a: 2, // c
+          e: "Dưới 0.8%C là Thép trước cùng tích (Hypoeutectoid).",
+        },
+        {
+          q: "43- Theo tổ chức tế vi thép cacbon > 0,8%C được gọi là thép:",
+          o: [
+            "a-Sau cùng tinh",
+            "b-Sau cùng tích",
+            "c-Trước cùng tích",
+            "d-Trước cùng tinh",
+          ],
+          a: 1, // b
+          e: "Trên 0.8%C là Thép sau cùng tích (Hypereutectoid).",
+        },
+        {
+          q: "44- Gang trắng là gang có tổ chức:",
+          o: [
+            "a-Màu trắng",
+            "b-Phù hợp với Fe-C cân bằng",
+            "c-Lêđêburit",
+            "d-Lêđêburit và peclit",
+          ],
+          a: 2, // c
+          e: "Gang trắng chứa Lêđêburit, mặt gãy sáng màu.",
+        },
+        {
+          q: "45- Gang cùng tinh là gang:",
+          o: [
+            "a-Có tổ chức 100% lêđêburit",
+            "b-Có phản ứng cùng tinh khi kết tinh",
+            "c-Có tổ chức lêđêburit và xêmentit",
+            "d-Có phản ứng cùng tinh không cân bằng",
+          ],
+          a: 0, // a
+          e: "Gang cùng tinh (4.3%C) có tổ chức 100% Lêđêburit.",
+        },
+        {
+          q: "46- Mn, C đều có thể hòa tan trong Fe để tạo các dung dịch rắn Fe(Mn) và Fe(C). Hãy xác định đó là những dung dịch rắn gì?",
+          o: [
+            "a-Cả hai đều là dung dịch rắn thay thế",
+            "b- Cả hai đều là dung dịch rắn xen kẽ",
+            "c- Fe(Mn) là dung dịch rắn thay thế",
+            "d- Fe(C) là dung dịch rắn thay thế",
+          ],
+          a: 2, // c
+          e: "Mn (kim loại, bán kính gần Fe) -> Thay thế. C (á kim, nhỏ) -> Xen kẽ.",
+        },
+        {
+          q: "47- Nếu giữa một kim loại và một kim loại khác tạo thành dung dịch rắn thì đó là:",
+          o: [
+            "a-Dung dịch rắn thay thế",
+            "b-Dung dịch rắn xen kẽ",
+            "c-Còn phải xét đến tương quan kích thước",
+            "d-Không thể tạo thành dung dịch rắn",
+          ],
+          a: 0, // a
+          e: "Kim loại với kim loại thường tạo dung dịch rắn thay thế (do bán kính nguyên tử không chênh lệch quá nhiều).",
+        },
+        {
+          q: "48- Nếu pha một ít Al vào Cu (tổ chức nhận được là đơn pha dung dịch rắn) thì:",
+          o: [
+            "a-Độ bền tăng, độ dẫn điện giảm",
+            "b-Độ bền tăng, độ dẫn điện tăng",
+            "c-Độ bền giảm, độ dẫn điện tăng",
+            "d-Độ bền giảm, độ dẫn điện giảm",
+          ],
+          a: 0, // a
+          e: "Dung dịch rắn: Cơ tính tăng, Lý tính (dẫn điện/nhiệt) giảm.",
+        },
+        {
+          q: "49-Về cơ tính, pha auxtenit (mạng lập phương tâm mặt) có đặc điểm là:",
+          o: [
+            "a-Rất cứng",
+            "b-Khó biến dạng dẻo",
+            "c-Dễ biến dạng dẻo",
+            "d-Rất bền",
+          ],
+          a: 2, // c
+          e: "Mạng FCC (Auxtenit) có tính dẻo rất cao.",
+        },
+        {
+          q: "50-Về cơ tính, pha xêmentit (Fe3C) có đặc điểm là:",
+          o: ["a-Rất bền", "b-Rất cứng", "c-Rất mềm", "d-Rất dẻo"],
+          a: 1, // b
+          e: "Xêmentit là pha gốm, rất cứng và giòn.",
+        },
+        {
+          q: "51-Về cơ tính, tổ chức peclit có đặc điểm là:",
+          o: [
+            "a-Dễ biến dạng dẻo",
+            "b-Khó biến dạng dẻo",
+            "c-Có độ cứng cao",
+            "d-Có độ bền cao",
+          ],
+          a: 3, // d
+          e: "Peclit có độ bền và độ cứng tốt (cao hơn Ferit, thấp hơn Mactenxit).",
+        },
+        {
+          q: "52- Về cơ tính, tổ chức lêđêburit có đặc điểm là:",
+          o: [
+            "a-Có độ bền cao",
+            "b-Có độ cứng cao",
+            "c-Có độ dẻo cao",
+            "d-Có độ dai va đập cao",
+          ],
+          a: 1, // b
+          e: "Lêđêburit chứa nhiều Xêmentit nên rất cứng và giòn.",
+        },
+        {
+          q: "65-Đặc diểm của chuyển biến auxtenit- peclit trong thép sau cùng tích là:",
+          o: [
+            "a-Tạo trước xêmentit",
+            "b-Tạo trước ferit",
+            "c-Tạo thành xêmentit",
+            "d-Tạo thành ferit",
+          ],
+          a: 0, // a
+          e: "Thép sau cùng tích (>0.8%C) sẽ tiết ra Xêmentit II ở biên giới hạt trước khi chuyển biến thành Peclit.",
+        },
+        {
+          q: "66-Đối với hợp kim sắt - cacbon, mactenxit là:",
+          o: [
+            "a-Dung dịch rắn quá bão hòa của C trong Fe gamma",
+            "b-Dung dịch rắn bão hòa của C trong Fe gamma",
+            "c-Dung dịch rắn quá bão hòa của C trong Fe alpha",
+            "d- Dung dịch rắn bão hòa của C trong Fe alpha",
+          ],
+          a: 2, // c
+          e: "Mactenxit là dung dịch rắn quá bão hòa của C trong Fe alpha.",
+        },
+        {
+          q: "67-Mạng tinh thể của mactenxit là:",
+          o: [
+            "a-Lập phương tâm mặt",
+            "b-Chính phương tâm mặt",
+            "c-Lập phương tâm khối",
+            "d-Chính phương tâm khối",
+          ],
+          a: 3, // d
+          e: "Do C bị kẹt lại, mạng lập phương tâm khối bị méo thành Chính phương tâm khối.",
+        },
+        {
+          q: "68-Vị trí tương đối của chuyển biến auxtenit–bainit so với chuyển biến auxtenit – peclit và auxtenit – mactenxit:",
+          o: [
+            "a-Giống chuyển biến auxtenit – peclit",
+            "b-Giống chuyển biến auxtenit – mactenxit",
+            "c-Trung gian giữa chuyển biến auxtenit – peclit và auxtenit – mactenxit",
+            "d-Không có đặc điểm chung",
+          ],
+          a: 2, // c
+          e: "Bainit là chuyển biến trung gian (cả về nhiệt độ và cơ chế) giữa Peclit (khuếch tán) và Mactenxit (không khuếch tán).",
+        },
+        {
+          q: "1-Đối với các vật liệu kim loại thông dụng như Fe, Al, Cu thì hợp kim của chúng được dùng rộng rãi vì:",
+          o: [
+            "a-Chúng có độ bền, độ cứng, và độ dẻo cao",
+            "b-Chúng có tính công nghệ và tính tổng hợp cao",
+            "c-Chúng có độ bền, độ cứng và khả năng gia công cao",
+            "d-Chế tạo và gia công dễ hơn",
+          ],
+          a: 1, // b
+          e: "Hợp kim thường có cơ tính tổng hợp (bền, cứng) tốt hơn và tính công nghệ (đúc, cắt gọt...) tốt hơn kim loại nguyên chất.",
+        },
+        {
+          q: "2-Thép là vật liệu có khả năng biến dạng dẻo tốt vì:",
+          o: [
+            "a-Ở trạng thái nóng không phụ thuộc vào thành phần cacbon",
+            "b-Ở trạng thái nguội không phụ thuộc vào thành phần cacbon",
+            "c-Ở trạng thái nóng phụ thuộc vào thành phần cacbon",
+            "d-Ở trạng thái nóng lẫn trạng thái nguội không phụ thuộc vào thành phần cacbon",
+          ],
+          a: 2, // c
+          e: "Ở trạng thái nóng (vùng Auxtenit), thép rất dẻo. Tuy nhiên hàm lượng Carbon càng cao thì tính dẻo càng giảm.",
+        },
+        {
+          q: "3-Sở dĩ Auxtenit dẻo, dễ biến dạng dẻo là nhờ:",
+          o: [
+            "a-Có mạng lập phương tâm khối",
+            "b-Có mạng lập phương tâm mặt",
+            "c-Tồn tại ở nhiệt độ cao",
+            "d-Hòa tan được nhiều cacbon",
+          ],
+          a: 1, // b
+          e: "Mạng Lập phương tâm mặt (FCC) có 12 hệ trượt, nhiều hơn so với BCC, nên khả năng biến dạng dẻo tốt nhất.",
+        },
+        {
+          q: "4-So với trước khi biến dạng dẻo, sau khi biến dạng dẻo kim lọai sẽ có:",
+          o: [
+            "a-Độ bền cao hơn",
+            "b-Độ cứng cao hơn",
+            "c-Độ bền, độ cứng cao hơn nhưng độ dẻo độ dai giảm đi",
+            "d-Độ bền, độ cứng, dộ dẻo, độ dai đều tăng lên",
+          ],
+          a: 2, // c
+          e: "Đây là hiện tượng hóa bền biến dạng (Work Hardening): Tăng bền/cứng, giảm dẻo/dai.",
+        },
+        {
+          q: "5-Trong sản xuất bê tông cốt thép ứng suất trước (dự ứng lực), cốt thép trước khi đổ bê tông được kéo dãn dài thêm 6-8% là để:",
+          o: [
+            "a-Làm sạch gỉ để bám dính bê tông được tốt hơn",
+            "b-Làm tăng giới hạn bền",
+            "c-Làm tăng giới hạn chảy (đàn hồi)",
+            "d-Tiết kiệm thép",
+          ],
+          a: 2, // c
+          e: "Kéo thép vượt qua miền đàn hồi để gây biến dạng dẻo, làm tăng giới hạn chảy (nhờ hóa bền), giúp thép chịu lực tốt hơn.",
+        },
+        {
+          q: "6-Một cách tổng quát, định luật Hooke (phương trình cơ sở của biến dạng đàn hồi) nói lên quan hệ tuyến tính giữa:",
+          o: [
+            "a-Ứng suất kéo và độ biến dạng",
+            "b- Ứng suất nén và độ biến dạng",
+            "c-Ứng suất và độ biến dạng",
+            "d-Ứng suất tiếp và độ xê dịch",
+          ],
+          a: 2, // c
+          e: "Định luật Hooke: σ = E.ε (Ứng suất tỷ lệ thuận với biến dạng trong miền đàn hồi).",
+        },
+        {
+          q: "7-Biến dạng dẻo là:",
+          o: [
+            "a-Biến dạng không đàn hồi",
+            "b-Biến dạng dư",
+            "c-Biến dạng chảy dẻo",
+            "d-Biến dạng ở trạng thái dẻo",
+          ],
+          a: 1, // b
+          e: "Biến dạng dẻo là biến dạng vĩnh viễn (biến dạng dư) còn lại sau khi thôi tác dụng lực.",
+        },
+        {
+          q: "8-Quá trình trượt để gây ra biến dạng dẻo xảy ra dưới tác dụng của:",
+          o: [
+            "a-Ứng suất tiếp trong vật liệu",
+            "b- Ứng suất pháp trong vật liệu",
+            "c-Ứng suất tiếp trên mặt trượt",
+            "d-Ứng suất pháp trên mặt trượt",
+          ],
+          a: 2, // c
+          e: "Theo định luật Schmid, biến dạng dẻo xảy ra do Ứng suất tiếp (Tau) phân bố trên các mặt trượt.",
+        },
+        {
+          q: "9-Quá trình trượt (khi biến dạng dẻo) trong tinh thể lý tưởng xảy ra bằng cách:",
+          o: [
+            "a-Tạo cấp bậc trên mặt trượt",
+            "b-Các nguyên tử trên mặt trượt dịch chuyển về 2 phía ngược nhau",
+            "c-Các nguyên tử dịch chuyển đồng thời dọc theo mặt trượt 1 khoảng cách nguyên tử",
+            "d-Các nguyên tử trên bề mặt trượt dịch chuyển cùng một lúc",
+          ],
+          a: 2, // c (Lý thuyết trượt cứng/đồng thời - Theoretical strength)
+          e: "Trong tinh thể lý tưởng (không có lệch), để trượt cần bẻ gãy đồng loạt các liên kết, đòi hỏi ứng suất cực lớn.",
+        },
+        {
+          q: "10-Thế nào là hóa bền biến dạng?",
+          o: [
+            "a-Là sự tăng độ bền khi biến dạng",
+            "b-Là hiện tượng vật liệu sau biến dạng dẻo trở nên bền hơn",
+            "c-Là hiện tượng khó phá hủy khi biến dạng",
+            "d-Là sự tăng độ bền, độ cứng, giảm độ dẻo khi biến dạng",
+          ],
+          a: 3, // d
+          e: "Định nghĩa đầy đủ nhất: Biến dạng dẻo làm tăng bền, tăng cứng nhưng làm giảm độ dẻo.",
+        },
+        {
+          q: "12-Vật liệu kim loại sau khi biến dạng dẻo với mức độ đáng kể thường xuất hiện textua. Đó là:",
+          o: [
+            "a-Sự định hướng ưu tiên về phương mạng của các hạt",
+            "b-Sự định hướng ưu tiên của các hạt",
+            "c-Các hạt tinh thể sắp xếp theo một hướng",
+            "d-Các phương tinh thể sắp xếp song song nhau",
+          ],
+          a: 0, // a
+          e: "Textua là hiện tượng mạng tinh thể của các hạt bị xoay và định hướng theo phương gia công.",
+        },
+        {
+          q: "13-Tổ chức textua sau biến dạng dẻo ảnh hưởng đến các tính chất như:",
+          o: [
+            "a-Tạo nên dị hướng về cơ tính và lý tính",
+            "b-Làm cho độ bền không giống nhau ở các tinh thể khác nhau",
+            "c-Tạo ra sự không đồng đều về lý và hóa tính",
+            "d-Tạo ra sự không đồng đều tính chất nói chung",
+          ],
+          a: 0, // a
+          e: "Textua làm vật liệu có tính dị hướng (tính chất khác nhau theo các phương khác nhau).",
+        },
+        {
+          q: "16-Nhiều chi tiết máy sau khi chế tạo xong được phun bi (shot peening). Tác dụng chủ yếu của loại gia công này?",
+          o: [
+            "a-Làm sạch bề mặt",
+            "b-Làm nhẵn bóng bề mặt",
+            "c-Hóa bền biến dạng lớp bề mặt",
+            "d-Điều chỉnh kích thước",
+          ],
+          a: 2, // c
+          e: "Phun bi làm biến dạng dẻo lớp bề mặt, gây ứng suất dư nén, giúp tăng độ bền mỏi.",
+        },
+        {
+          q: "17-Phá hủy giòn của vật liệu được gọi là dạng phá hủy:",
+          o: [
+            "a-Xảy ra tức thời",
+            "b-Hầu như không có biến dạng dư",
+            "c-Kèm theo sự vỡ vụn của vật liệu",
+            "d-Có vết gãy dạng phẳng",
+          ],
+          a: 1, // b
+          e: "Đặc điểm nhận dạng quan trọng nhất của phá hủy giòn là không có (hoặc rất ít) biến dạng dẻo trước khi gãy.",
+        },
+        {
+          q: "18-Phá hủy dẻo của vật liệu là dạng phá hủy:",
+          o: [
+            "a-Xảy ra từ từ",
+            "b-Có tạo ra vùng thắt trên mẫu",
+            "c-Kèm theo biến dạng dư đáng kể",
+            "d-Vết gãy có dạng mặt côn",
+          ],
+          a: 2, // c
+          e: "Phá hủy dẻo luôn đi kèm biến dạng dư lớn (như thắt cổ chai).",
+        },
+        {
+          q: "19-Nguyên nhân dẫn đến phá hủy vật liệu là:",
+          o: [
+            "a-Sự tập trung ứng suất",
+            "b-Sự tồn tại các vết nứt",
+            "c-Sự hình thành và phát triển các vết nứt",
+            "d-Sự mất liên kết trong vật liệu",
+          ],
+          a: 2, // c
+          e: "Quá trình phá hủy bao gồm 2 giai đoạn chính: Tạo vết nứt và Phát triển vết nứt.",
+        },
+        {
+          q: "20-Trạng thái bề mặt như thế nào là tốt nhất để chi tiết có khả năng chịu mỏi cao?",
+          o: [
+            "a-Độ cứng bề mặt cao",
+            "b-Độ bóng bề mặt cao",
+            "c-Chứa ứng suất dư",
+            "d-Độ bóng cao và ứng suất dư nén",
+          ],
+          a: 3, // d
+          e: "Độ bóng cao giảm tập trung ứng suất, Ứng suất dư nén ép các vết nứt bề mặt lại.",
+        },
+        {
+          q: "21-Tại sao ứng suất dư nén ở lớp bề mặt có tác dụng làm tăng độ bền mỏi?",
+          o: [
+            "a-Vì làm tăng độ bền",
+            "b-Vì hạn chế phát triển vết nứt",
+            "c-Vì làm tăng độ sít chặt vật liệu",
+            "d-Vì hạn chế chuyển động của lệch",
+          ],
+          a: 1, // b
+          e: "Ứng suất nén làm khép kín các vết nứt tế vi trên bề mặt, ngăn chúng phát triển.",
+        },
+        {
+          q: "22-Vì sao môi trường ăn mòn thúc đẩy phá hủy mỏi?",
+          o: [
+            "a-Vì lớp sản phẩm ăn mòn làm yếu chi tiết",
+            "b-Vì lớp oxit có tính chống ăn mòn",
+            "c-Vì bề mặt ăn mòn nhấp nhô thúc đẩy tạo vết nứt mỏi",
+            "d-Vì ăn mòn tạo ra các vùng tập trung ứng suất",
+          ],
+          a: 3, // d
+          e: "Các vết rỗ do ăn mòn đóng vai trò là nơi tập trung ứng suất, khởi tạo vết nứt mỏi sớm.",
+        },
+        {
+          q: "23-Biến dạng dẻo trong đơn tinh thể xẩy ra bằng cách:",
+          o: [
+            "a-Trượt theo thể tích",
+            "b-Trượt trong các mặt tinh thể",
+            "c-Trượt theo các phương tinh thể",
+            "d-Trượt theo các mặt và phương tinh thể xác định",
+          ],
+          a: 3, // d
+          e: "Trượt xảy ra trên các mặt xếp chặt nhất và theo phương xếp chặt nhất (Hệ trượt).",
+        },
+        {
+          q: "24-Khi tác dụng lên đơn tinh thể một lực kéo hoặc nén, muốn biến dạng dẻo xẩy ra dễ dàng nhất thì mặt trượt phải có góc định hướng với ngoại lực:",
+          o: ["a-20 độ", "b-45 độ", "c-0 độ", "d-80 độ"],
+          a: 1, // b
+          e: "Theo định luật Schmid, ứng suất tiếp cực đại khi góc hợp bởi lực với mặt trượt và phương trượt là 45 độ.",
+        },
+        {
+          q: "25-Phương trượt ưu tiên trong mạng lập phương tâm mặt (A1) là:",
+          o: ["a-[110]", "b-[111]", "c-[100]", "d-[121]"],
+          a: 0, // a
+          e: "Trong FCC, phương trượt là đường chéo mặt [110].",
+        },
+        {
+          q: "26-Phương trượt ưu tiên trong mạng lập phương tâm khối (A2) là:",
+          o: ["a-[110]", "b-[111]", "c-[100]", "d-[121]"],
+          a: 1, // b
+          e: "Trong BCC, phương trượt là đường chéo khối [111].",
+        },
+        {
+          q: "27-Trong số Al, Fe, Zn, Ag khả năng biến dạng dẻo của kim loại nào là tốt nhất?",
+          o: [
+            "a-Al (lập phương tâm mặt)",
+            "b-Zn (sáu phương xếp chặt)",
+            "c-Fe (lập phương tâm khối)",
+            "d-Ti (sáu phương)",
+          ],
+          a: 0, // a
+          e: "Mạng Lập phương tâm mặt (Al, Ag, Cu) có độ dẻo cao nhất. (Ag dẻo hơn Al nhưng trong đáp án này chọn A là đại diện FCC).",
+        },
+        {
+          q: "28-Kéo một sợi dây đồng có d=2mm lần lượt qua các lỗ 1,9mm rồi 1,8mm. Ứng suất để kéo dây của lần sau so với lần trước:",
+          o: ["a-Tăng", "b-Giảm", "c-Không đổi", "d-Giảm mạnh"],
+          a: 0, // a
+          e: "Do hóa bền biến dạng, kim loại cứng hơn sau mỗi lần kéo, cần lực lớn hơn để tiếp tục biến dạng.",
+        },
+        {
+          q: "29-Gập đảo nhiều lần sợi kim loại, nó sẽ gãy. Đây là kết quả của tính chất gì?",
+          o: [
+            "a-Độ bền tăng mạnh khi biến dạng dẻo",
+            "b-Độ cứng tăng mạnh khi biến dạng dẻo",
+            "c-Độ giòn tăng mạnh khi biến dạng dẻo",
+            "d-Mođun đàn hồi thay đổi đáng kể",
+          ],
+          a: 2, // c
+          e: "Hóa bền làm tăng độ giòn, khi vượt quá giới hạn, vật liệu sẽ gãy.",
+        },
+        {
+          q: "30-Độ bền của kim loại sau biến dạng dẻo được nâng cao chủ yếu là do:",
+          o: [
+            "a-Kích thước hạt nhỏ",
+            "b-Có tổ chức textua",
+            "c-Mật độ lệch cao",
+            "d-Tiết pha phân tán",
+          ],
+          a: 2, // c
+          e: "Cơ chế chính của hóa bền biến dạng là sự gia tăng mật độ lệch và sự giao cắt giữa các lệch.",
+        },
+        {
+          q: "31-Hãy chọn phương pháp đo độ cứng phù hợp nhất cho 1 chi tiết bằng thép sau khi được tôi cứng:",
+          o: ["a-HB", "b-HRA", "c-HRC", "d-HV"],
+          a: 2, // c
+          e: "HRC (Rockwell C) dùng mũi kim cương, tải trọng 150kg, chuyên đo thép tôi cứng.",
+        },
+        {
+          q: "32-Phá hủy mỏi là dạng phá hủy của vật liệu khi:",
+          o: [
+            "a-Tải trong thay đổi theo thời gian",
+            "b-Tải trọng thay đổi tuần hoàn theo thời gian rất nhiều lần",
+            "c-Tải trọng thay đổi theo hình sin",
+            "d-Tải trọng thay đổi theo chu kỳ",
+          ],
+          a: 1, // b
+          e: "Mỏi xảy ra do tải trọng lặp đi lặp lại (chu kỳ) trong thời gian dài.",
+        },
+        {
+          q: "34-Trong các phương pháp xử lý bề mặt: thấm C, mạ Cr, thấm N, phủ Epoxy thì phương pháp nào làm tăng đáng kể độ bền mỏi?",
+          o: ["a-Thấm C", "b-Mạ Cr", "c-Thấm N", "d-Phủ Epoxy"],
+          a: 2, // c
+          e: "Thấm Nitơ tạo lớp bề mặt rất cứng và có ứng suất dư nén cao, chống mỏi tốt nhất.",
+        },
+        {
+          q: "35-Các trục chịu tải trong điều kiện quay vận tốc lớn thường được lăn ép (roller burnishing) với mục đích:",
+          o: [
+            "a-Tăng độ cứng",
+            "b-Tăng độ bền",
+            "c-Tăng độ bóng",
+            "d-Tăng độ bền mỏi",
+          ],
+          a: 3, // d
+          e: "Lăn ép tạo độ bóng cao và ứng suất dư nén, chuyên dùng để tăng bền mỏi cho trục.",
+        },
+        {
+          q: "36-Khi chọn vật liệu và chế độ nhiệt luyện cho dụng cụ cắt gọt, hai yêu cầu quan trọng nhất là:",
+          o: [
+            "a-Độ bền và độ cứng",
+            "b-Độ cứng và độ dai va đập",
+            "c-Độ bền và độ dai va đập",
+            "d-Độ dai va đập và khả năng chịu mài mòn",
+          ],
+          a: 1, // b
+          e: "Cần Độ cứng (để cắt) và Độ dai (để không bị mẻ/gãy khi va đập).",
+        },
+        {
+          q: "37-Trong các loại thép, nguyên tố thường gây ảnh hưởng mạnh nhất đến cơ tính và quyết định công dụng của thép là:",
+          o: ["a-Crôm", "b-Niken", "c-Cacbon", "d-Vônfram"],
+          a: 2, // c
+          e: "Cacbon quyết định chính: C thấp (dẻo, xây dựng), C trung bình (bền, chi tiết máy), C cao (cứng, dụng cụ).",
+        },
+        {
+          q: "38-So với kim loại hạt lớn, kim loại hạt nhỏ có:",
+          o: [
+            "a-Độ bền cao hơn, song độ dẻo, độ dai thấp hơn",
+            "b-Độ bền, độ dẻo, độ dai đều cao hơn",
+            "c-Độ bền, độ dẻo, độ dai đều thấp hơn",
+            "d-Độ bền thấp hơn, song độ dẻo, độ dai cao hơn",
+          ],
+          a: 1, // b
+          e: "Nhỏ hạt là phương pháp duy nhất nâng cao đồng thời cả độ bền và độ dẻo dai.",
+        },
+        {
+          q: "39-Trong số các chỉ tiêu cơ tính, kích thước hạt ảnh hưởng mạnh nhất đến:",
+          o: [
+            "a-Độ cứng",
+            "b-Giới hạn bền",
+            "c-Độ giãn dài",
+            "d-Độ dai va đập",
+          ],
+          a: 3, // d
+          e: "Hạt nhỏ làm giảm nhiệt độ chuyển biến dẻo-giòn, tăng mạnh độ dai va đập.",
+        },
+        {
+          q: "40-Hiểu thế nào là vật liệu có cơ tính tổng hợp (độ bền kết cấu) cao?",
+          o: [
+            "a-Độ cứng cao, độ bền cao, độ dẻo cao",
+            "b-Độ bền cao, độ dẻo cao",
+            "c-Chống biến dạng dẻo tốt và chống phá hủy tốt",
+            "d-Chống biến dạng đàn hồi và độ dẻo tốt",
+          ],
+          a: 2, // c
+          e: "Cơ tính tổng hợp là sự kết hợp giữa độ bền (chống biến dạng) và độ dai (chống gãy).",
+        },
+        {
+          q: "41-Tương quan giữa độ bền lý thuyết của vật liệu tinh thể so với độ bền thực tế là:",
+          o: [
+            "a-Cao hơn hàng chục lần",
+            "b-Cao hơn hàng trăm lần",
+            "c-Thấp hơn hàng chục lần",
+            "d-Thấp hơn hàng trăm lần",
+          ],
+          a: 1, // b
+          e: "Do mạng tinh thể thực tế có khuyết tật (lệch), độ bền thực tế thấp hơn lý thuyết 100-1000 lần.",
+        },
+        {
+          q: "42-Yếu tố hóa bền chủ yếu trong thép hạt nhỏ là:",
+          o: [
+            "a-Mật độ lệch cao",
+            "b-Kích thước hạt nhỏ",
+            "c-Tiết pha phân tán",
+            "d-Dung dịch rắn",
+          ],
+          a: 1, // b
+          e: "Biên giới hạt ngăn cản chuyển động của lệch (Hệ thức Hall-Petch).",
+        },
+        {
+          q: "43-Yếu tố hóa bền chủ yếu trong hợp kim nhôm độ bền cao là:",
+          o: [
+            "a-Dung dịch rắn",
+            "b-Kích thước hạt nhỏ",
+            "c-Tiết pha phân tán",
+            "d-Mật độ lệch cao",
+          ],
+          a: 2, // c
+          e: "Cơ chế hóa bền quan trọng nhất của hợp kim nhôm (Duralumin) là hóa bền tiết pha (già hóa).",
+        },
+        {
+          q: "44-Ba phương pháp thử độ cứng thông dụng là Rockwell, Brinell, Vickers. Ký hiệu là:",
+          o: ["a-RC BR VC", "b-HR BR VC", "c-HR HB HV", "d-HRC HB HV"],
+          a: 3, // d
+          e: "Rockwell (HRC/HRB), Brinell (HB), Vickers (HV).",
+        },
+        {
+          q: "45-Độ cứng Rockwell thang C (HRC) sử dụng mũi đo là:",
+          o: [
+            "a-Hình nón kim cương",
+            "b-Hình chóp kim cương hoặc hợp kim cứng",
+            "c-Hình nón kim cương hoặc hợp kim cứng",
+            "d-Viên bi thép tôi",
+          ],
+          a: 0, // a
+          e: "HRC dùng mũi nón kim cương góc đỉnh 120 độ.",
+        },
+        {
+          q: "46-Chọn phương pháp đo phù hợp nhất cho 1 mẫu đồng dày 3mm:",
+          o: ["a-HRB", "b-HB", "c-HV", "d-HRC"],
+          a: 0, // a
+          e: "Đồng là kim loại mềm/trung bình -> Dùng Rockwell B (HRB) hoặc Brinell, nhưng HRB đo nhanh và tiện hơn cho tấm mỏng.",
+        },
+        {
+          q: "47-Kết tinh lại trong vật liệu tinh thể đã qua biến dạng dẻo là gì?",
+          o: [
+            "a-Là quá trình sinh và phát triển các hạt tinh thể mới ít khuyết tật",
+            "b-Là quá trình chuyển sang cấu trúc kim lọai mới",
+            "c-Là một dạng chuyển pha ở trạng thái rắn",
+            "d-Là sự tiết ra pha tinh thể từ tổ chức nền",
+          ],
+          a: 0, // a
+          e: "Kết tinh lại khử bỏ ứng suất, tạo hạt mới đẳng trục.",
+        },
+        {
+          q: "48-Nhiệt độ kết tinh lại (TKTL) của kim loại sạch xác định gần đúng theo Tnc:",
+          o: [
+            "a-0,1-0,2 Tnc",
+            "b-0,3-0,4 Tnc",
+            "c-0,5-0,6 Tnc",
+            "d-0,7-0,8 Tnc",
+          ],
+          a: 1, // b
+          e: "Quy tắc Bochvar: TKTL ≈ 0.4 Tnc.",
+        },
+        {
+          q: "49-Cán, kéo, dập ở nhiệt độ trong phòng là biến dạng nóng đối với vật liệu:",
+          o: ["a-Nhôm", "b-Đồng", "c-Chì (Tnc=327°C)", "d-Sắt"],
+          a: 2, // c
+          e: "Chì có Tnc thấp (~600K), nên TKTL ≈ 240K (-33°C). Nhiệt độ phòng (25°C) > TKTL của Chì -> Biến dạng nóng.",
+        },
+        {
+          q: "50-Thép tấm sau khi cán nguội + ủ có khả năng chống ăn mòn tốt hơn hay xấu hơn so với trường hợp không ủ?",
+          o: ["a-Giống nhau", "b-Tốt hơn", "c-Xấu hơn", "d-Xấu hơn đáng kể"],
+          a: 1, // b
+          e: "Thép không ủ chứa năng lượng cao (ứng suất, lệch) nên dễ bị ăn mòn. Ủ làm giảm năng lượng -> Chống ăn mòn tốt hơn.",
+        },
+        {
+          q: "51-Cơ tính của kim loại sau kết tinh lại thay đổi như thế nào?",
+          o: [
+            "a-Độ cứng tăng, độ bền tăng, độ dẻo giảm",
+            "b-Độ cứng tăng, độ bền giảm, độ dẻo tăng",
+            "c-Độ cứng giảm, độ bền giảm, độ dẻo tăng",
+            "d-Độ cứng tăng, độ bền tăng, độ dẻo tăng",
+          ],
+          a: 2, // c
+          e: "Kết tinh lại làm vật liệu 'mềm' đi: Giảm bền/cứng, tăng dẻo/dai.",
+        },
+        {
+          q: "52-Thế nào là biến dạng nóng?",
+          o: [
+            "a-Là biến dạng ở nhiệt độ cao",
+            "b-Là biến dạng dẻo ở nhiệt độ cao",
+            "c-Là biến dạng dẻo ở nhiệt độ thấp hơn TKTL",
+            "d-Là biến dạng dẻo ở nhiệt độ cao hơn TKTL",
+          ],
+          a: 3, // d
+          e: "Biến dạng nóng xảy ra trên nhiệt độ kết tinh lại (không gây hóa bền).",
+        },
+      ];
+      let queue = [];
+      let currentIdx = 0;
+      let score = 0;
+
+      function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      function init() {
+        queue = shuffle([...DATA]);
+        currentIdx = 0;
+        score = 0;
+        render();
+      }
+
+      function render() {
+        if (currentIdx >= queue.length) {
+          document.querySelector(".card").innerHTML = `
+                  <div style='text-align:center'>
+                    <h2>Hoàn thành!</h2>
+                    <p>Điểm số: ${score}/${queue.length}</p>
+                    <button class='nav-btn' onclick='location.reload()'>Làm lại từ đầu</button>
+                  </div>`;
+          return;
+        }
+
+        const item = queue[currentIdx];
+        document.getElementById("qCount").innerText = `${currentIdx + 1}/${
+          queue.length
+        }`;
+        document.getElementById("score").innerText = score;
+
+        document.getElementById("qText").innerText = item.q;
+        document.getElementById("feedback").style.display = "none";
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("explain").innerHTML = "";
+
+        const optDiv = document.getElementById("optContainer");
+        optDiv.innerHTML = "";
+
+        item.o.forEach((opt, idx) => {
+          const btn = document.createElement("button");
+          btn.innerText = opt;
+          btn.onclick = () => check(idx, item.a, btn, item);
+          optDiv.appendChild(btn);
+        });
+      }
+
+      function check(selected, correct, btn, item) {
+        // Vô hiệu hóa các nút sau khi chọn
+        const btns = document.querySelectorAll("#optContainer button");
+        btns.forEach((b) => (b.disabled = true));
+
+        if (selected === correct) {
+          btn.classList.add("correct");
+          score++;
+        } else {
+          btn.classList.add("wrong");
+          // Hiện đáp án đúng
+          btns[correct].classList.add("correct");
+        }
+
+        //document.getElementById("explain").innerHTML = item.e;
+        document.getElementById("feedback").style.display = "block";
+        document.getElementById("nextBtn").style.display = "block";
+      }
+
+      function nextQ() {
+        currentIdx++;
+        render();
+      }
+
+      // Chạy lần đầu
+      init();
+    </script>
+  </body>
+</html>
