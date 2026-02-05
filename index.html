@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="utf-8" />
@@ -165,7 +165,6 @@
 
     <script>
       const DATA = [
-        // --- CÂU 1 ĐẾN 7 ---
         {
           q: "1-Liên kết kim loại trong vật liệu là liên kết được tạo ra:",
           o: [
@@ -174,7 +173,7 @@
             "c-Giữa các proton và điện tử tự do",
             "d-Giữa các nguyên tử trong kim loại",
           ],
-          a: 1, // Chọn b (Chính xác nhất là điện tử TỰ DO và ion dương nút mạng)
+          a: 1,
           e: "Liên kết kim loại là lực hút tĩnh điện giữa các ion dương ở nút mạng và khí quyển điện tử tự do.",
         },
         {
@@ -371,7 +370,7 @@
             "c-điện trở",
             "d-nhiệt độ chảy",
           ],
-          a: 0, // a
+          a: 1, // a
           e: "Tương tự lệch biên, lệch xoắn ảnh hưởng chủ yếu đến độ bền và biến dạng dẻo.",
         },
         {
@@ -395,7 +394,7 @@
             "d-Mầm có thành phần giống như pha mẹ",
           ],
           a: 0, // a
-          e: "Mầm tự sinh sinh ra ngẫu nhiên ngay trong lòng pha mẹ đồng nhất.",
+          e: "",
         },
         {
           q: "2-Mầm ký sinh (mầm dị thể) khi chuyển pha là:",
@@ -406,7 +405,7 @@
             "d-Mầm dạng chỏm cầu trên bề mặt vật rắn",
           ],
           a: 2, // c
-          e: "Mầm ký sinh bám vào các tạp chất hoặc bề mặt rắn có sẵn để giảm năng lượng.",
+          e: "",
         },
         {
           q: "3-Đối với các vật liệu kim loại thông dụng như Fe, Al, Cu thì hợp kim của chúng được dùng rộng rãi vì:",
@@ -416,8 +415,8 @@
             "c-Chúng có độ bền, độ cứng và khả năng gia công cao",
             "d-Chế tạo và gia công dễ hơn",
           ],
-          a: 2, // b
-          e: "Hợp kim thường có cơ tính tổng hợp tốt hơn và tính công nghệ (đúc, cắt gọt...) tốt hơn kim loại nguyên chất.",
+          a: 1, // b
+          e: "",
         },
         {
           q: "4-Thép là vật liệu có khả năng biến dạng dẻo tốt vì:",
@@ -428,7 +427,7 @@
             "d-Ở trạng thái nóng lẫn trạng thái nguội không phụ thuộc vào thành phần cacbon",
           ],
           a: 3, // c
-          e: "Thép biến dạng dẻo tốt nhất ở trạng thái nóng (vùng Austenit), nhưng khả năng này giảm khi hàm lượng Carbon tăng.",
+          e: ".",
         },
         {
           q: "5-Kết tinh lại trong vật liệu tinh thể đã qua biến dạng dẻo là gì?",
@@ -526,7 +525,7 @@
             "c- Độ bền giảm, độ cứng giảm, độ dẻo giảm",
             "d- Độ bền tăng, độ cứng giảm, độ dẻo giảm",
           ],
-          a: 3, // a
+          a: 1, // a
           e: "Hóa bền dung dịch rắn: Tăng bền, tăng cứng nhưng làm giảm độ dẻo.",
         },
         {
@@ -537,7 +536,7 @@
             "c-Pha B phân bố trong các tinh thể pha A",
             "d-Pha A phân bố trong các tinh thể pha B",
           ],
-          a: 0, // b
+          a: 1, // b
           e: "Dung dịch rắn đồng nhất chỉ có 1 pha duy nhất.",
         },
         {
@@ -570,7 +569,7 @@
             "c-Chi tiết chịu va đập",
             "d-Dụng cụ cắt gọt và khuôn mẫu",
           ],
-          a: 1, // d
+          a: 3, // d
           e: "Các pha này có độ cứng rất cao (hợp kim cứng), dùng làm dao cắt.",
         },
         {
@@ -592,7 +591,7 @@
             "c-Giữa 2 nguyên tố có điện tử tự do",
             "d-Giữa kim lọai và 1 nguyên tố khác có nồng độ điện tử xác định",
           ],
-          a: 3, // a
+          a: 1, // a
           e: "Pha điện tử được xác định bởi tỷ lệ giữa số điện tử hóa trị và số nguyên tử.",
         },
         {
@@ -614,7 +613,7 @@
             "c-Từ 1 pha lỏng cùng lúc tạo ra 2 hay nhiều pha rắn khác nhau",
             "d-Từ 1 pha rắn tạo ra 2 pha lỏng",
           ],
-          a: 1, // c
+          a: 2, // c
           e: "Cùng tinh (Eutectic): Lỏng -> Rắn 1 + Rắn 2.",
         },
         {
@@ -625,7 +624,7 @@
             "c-Từ 1 pha lỏng cùng lúc tạo thành 2 hoặc nhiều pha rắn khác",
             "d-Từ 1 pha rắn và 1 pha lỏng tạo thành 2 pha rắn khác",
           ],
-          a: 2, // b
+          a: 1, // b
           e: "Cùng tích (Eutectoid): Rắn 1 -> Rắn 2 + Rắn 3.",
         },
 
@@ -728,7 +727,7 @@
             "c- A2.14 -> F + Xe",
             "d- A0.8 -> L + Xe",
           ],
-          a: 3,
+          a: 1,
           e: "Cùng tích: Auxtenit phân rã thành Ferit và Xêmentit.",
         },
         {
@@ -805,7 +804,7 @@
             "c-Lêđêburit",
             "d-Lêđêburit và peclit",
           ],
-          a: 3, // c
+          a: 2, // c
           e: "Gang trắng chứa Lêđêburit, mặt gãy sáng màu.",
         },
         {
@@ -838,7 +837,7 @@
             "c-Còn phải xét đến tương quan kích thước",
             "d-Không thể tạo thành dung dịch rắn",
           ],
-          a: 2, // a
+          a: 0, // a
           e: "Kim loại với kim loại thường tạo dung dịch rắn thay thế (do bán kính nguyên tử không chênh lệch quá nhiều).",
         },
         {
@@ -910,7 +909,7 @@
             "c-Dung dịch rắn quá bão hòa của C trong Fe alpha",
             "d- Dung dịch rắn bão hòa của C trong Fe alpha",
           ],
-          a: 0, // c
+          a: 2, // c
           e: "Mactenxit là dung dịch rắn quá bão hòa của C trong Fe alpha.",
         },
         {
@@ -921,7 +920,7 @@
             "c-Lập phương tâm khối",
             "d-Chính phương tâm khối",
           ],
-          a: 2, // d
+          a: 3, // d
           e: "Do C bị kẹt lại, mạng lập phương tâm khối bị méo thành Chính phương tâm khối.",
         },
         {
@@ -1304,7 +1303,7 @@
             "c-Thấp hơn hàng chục lần",
             "d-Thấp hơn hàng trăm lần",
           ],
-          a: 2, // b
+          a: 1, // b
           e: "Do mạng tinh thể thực tế có khuyết tật (lệch), độ bền thực tế thấp hơn lý thuyết 100-1000 lần.",
         },
         {
@@ -1332,7 +1331,7 @@
         {
           q: "44-Ba phương pháp thử độ cứng thông dụng là Rockwell, Brinell, Vickers. Ký hiệu là:",
           o: ["a-RC BR VC", "b-HR BR VC", "c-HR HB HV", "d-HRC HB HV"],
-          a: 2, // d
+          a: 3, // d
           e: "Rockwell (HRC/HRB), Brinell (HB), Vickers (HV).",
         },
         {
@@ -1343,13 +1342,13 @@
             "c-Hình nón kim cương hoặc hợp kim cứng",
             "d-Viên bi thép tôi",
           ],
-          a: 2, // a
+          a: 0, // a
           e: "HRC dùng mũi nón kim cương góc đỉnh 120 độ.",
         },
         {
           q: "46-Chọn phương pháp đo phù hợp nhất cho 1 mẫu đồng dày 3mm:",
           o: ["a-HRB", "b-HB", "c-HV", "d-HRC"],
-          a: 2, // a
+          a: 0, // a
           e: "Đồng là kim loại mềm/trung bình -> Dùng Rockwell B (HRB) hoặc Brinell, nhưng HRB đo nhanh và tiện hơn cho tấm mỏng.",
         },
         {
@@ -1371,7 +1370,7 @@
             "c-0,5-0,6 Tnc",
             "d-0,7-0,8 Tnc",
           ],
-          a: 2, // b
+          a: 1, // b
           e: "Quy tắc Bochvar: TKTL ≈ 0.4 Tnc.",
         },
         {
@@ -1394,7 +1393,7 @@
             "c-Độ cứng giảm, độ bền giảm, độ dẻo tăng",
             "d-Độ cứng tăng, độ bền tăng, độ dẻo tăng",
           ],
-          a: 0, // c
+          a: 2, // c
           e: "Kết tinh lại làm vật liệu 'mềm' đi: Giảm bền/cứng, tăng dẻo/dai.",
         },
         {
@@ -1603,7 +1602,7 @@
         },
         {
           q: "53-Hình 10 là tổ chức của:",
-          img: "Hinh10.png",
+          img: "cau53.png",
           o: [
             "a-Thép trước cùng tích",
             "b-Thép pec lit hạt",
@@ -1614,25 +1613,25 @@
         },
         {
           q: "54-Hình 11 là tổ chức của:",
-          img: "Hinh11.png",
+          img: "cau54.png",
           o: ["a-Thép cùng tích", "b-Gang dẻo", "c-Gang cầu", "d-Gang xám"],
           a: 1, // b-Gang dẻo
         },
         {
           q: "55-Hình 12 là tổ chức của:",
-          img: "Hinh12.png",
+          img: "cau55.png",
           o: ["a-Gang cùng tinh", "b-Gang dẻo", "c-Gang cầu", "d-Gang xám"],
           a: 0, // a-Gang cùng tinh
         },
         {
           q: "56-Hình 13 là tổ chức của:",
-          img: "Hinh13.png",
+          img: "cau56.png",
           o: ["a-Thép cùng tích", "b-Gang dẻo", "c-Gang cầu", "d-Gang xám"],
           a: 3, // d-Gang xám
         },
         {
           q: "57-Hình 14 là tổ chức của:",
-          img: "Hinh14.png",
+          img: "cau57.png",
           o: [
             "a-Gang sau cùng tinh",
             "b-Gang trước cùng tinh",
@@ -1643,7 +1642,7 @@
         },
         {
           q: "58-Hình 15 là tổ chức của:",
-          img: "Hinh15.png",
+          img: "cau58.png",
           o: [
             "a-Gang sau cùng tinh",
             "b-Gang trước cùnh tinh",
@@ -1654,7 +1653,7 @@
         },
         {
           q: "59-Hình 16 là tổ chức của:",
-          img: "Hinh16.png",
+          img: "cau59.png",
           o: [
             "a-Gang sau cùng tinh",
             "b-Gang trước cùnh tinh",
@@ -1665,25 +1664,25 @@
         },
         {
           q: "60- Hình 17 là tổ chức:",
-          img: "Hinh17.png",
+          img: "cau60.png",
           o: ["a-peclit", "b-mactenxit", "c-lêđêburit", "d-ferit"],
           a: 1, // b-mactenxit
         },
         {
           q: "61- Hình 18 là tổ chức:",
-          img: "Hinh18.png", // Đây là file ảnh bạn vừa gửi
+          img: "cau61.png", // Đây là file ảnh bạn vừa gửi
           o: ["a-peclit", "b-mactenxit", "c-lêđêburit", "d-ferit"],
           a: 0, // a-peclit (Nhìn hình là dạng tấm song song)
         },
         {
           q: "62- Hình 19 là tổ chức:",
-          img: "Hinh19.png",
+          img: "cau62.png",
           o: ["a-peclit hat", "b-xóocbit", "c-lêđêburit", "d-ferit"],
           a: 0, // a-peclit hat
         },
         {
           q: "63-Hình 20 là tổ chức của:",
-          img: "Hinh20.png",
+          img: "cau63.png",
           o: [
             "a-Gang sau cùng tinh",
             "b-Gang trước cùnh tinh",
@@ -1730,7 +1729,7 @@
             "c-tổ chức của pha không cân bằng",
             "d-tổ chức của pha ở nhiệt độ cao",
           ],
-          a: 1, // c (Tôi là tạo ra trạng thái không cân bằng)
+          a: 2, // c (Tôi là tạo ra trạng thái không cân bằng)
         },
         {
           q: "164-Biểu đồ động học chuyển pha khi nguội đẳng nhiệt có dạng:",
@@ -1790,7 +1789,7 @@
             "c-Trung gian giữa chuyển biến auxtenit - peclit và auxtenit - mactenxit",
             "d-Không có đặc điểm chung so với 2 chuyển biến trên",
           ],
-          a: 1, // c
+          a: 2, // c
         },
         // Bỏ qua câu 171, 172, 173, 174, 175 (Liên quan hình H03-26, H03-27)
         {
@@ -2092,7 +2091,7 @@
       }
 
       function init() {
-        queue = shuffle([...DATA]);
+        queue =shuffle([...DATA]);
         currentIdx = 0;
         score = 0;
         render();
@@ -2115,7 +2114,35 @@
         }`;
         document.getElementById("score").innerText = score;
 
-        document.getElementById("qText").innerText = item.q;
+        // --- SỬA ĐỔI QUAN TRỌNG ĐỂ HIỆN ẢNH ---
+        const qDiv = document.getElementById("qText");
+        qDiv.innerHTML = ""; // Xóa nội dung cũ
+
+        // 1. Tạo và hiện câu hỏi (chữ)
+        const textNode = document.createElement("div");
+        textNode.innerText = item.q;
+        qDiv.appendChild(textNode);
+
+        // 2. Kiểm tra xem có ảnh không, nếu có thì tạo thẻ <img>
+        if (item.img && item.img.trim() !== "") {
+          const imgNode = document.createElement("img");
+          imgNode.src = item.img; // Đường dẫn ảnh lấy từ data
+          imgNode.style.maxWidth = "100%"; // Giới hạn chiều rộng ảnh
+          imgNode.style.display = "block"; // Xuống dòng
+          imgNode.style.margin = "15px auto"; // Căn giữa và cách lề
+          imgNode.style.borderRadius = "8px"; // Bo tròn góc cho đẹp
+          imgNode.style.border = "1px solid #ddd"; // Viền mờ
+
+          // Xử lý lỗi nếu ảnh không tìm thấy
+          imgNode.onerror = function () {
+            this.style.display = "none"; // Ẩn đi nếu lỗi ảnh
+            console.log("Không tìm thấy ảnh: " + item.img);
+          };
+
+          qDiv.appendChild(imgNode);
+        }
+        // ----------------------------------------
+
         document.getElementById("feedback").style.display = "none";
         document.getElementById("nextBtn").style.display = "none";
         document.getElementById("explain").innerHTML = "";
@@ -2130,9 +2157,7 @@
           optDiv.appendChild(btn);
         });
       }
-
       function check(selected, correct, btn, item) {
-        // Vô hiệu hóa các nút sau khi chọn
         const btns = document.querySelectorAll("#optContainer button");
         btns.forEach((b) => (b.disabled = true));
 
