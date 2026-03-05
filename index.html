@@ -1,2185 +1,822 @@
 <!doctype html>
 <html lang="vi">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Trắc nghiệm KHVLĐC - Full Data</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Speed Run (SRS Core)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
       :root {
-        --bg: #f0f9ff;
-        --card-bg: #ffffff;
-        --primary: #0284c7;
-        --accent: #f59e0b;
-        --text: #1f2937;
-        --correct: #10b981;
-        --wrong: #ef4444;
+        /* Bảng màu Tech Light Mode (Apple Boutique) */
+        --bg-light: #fefefe;
+        --card-bg: rgba(255, 255, 255, 0.65); /* Tăng độ đục để dễ đọc hơn */
+        --card-border: rgba(255, 255, 255, 0.5);
+        --text-main: #222222;
+        --text-sub: #555555;
+        --accent: #007aff; /* Apple Blue chuẩn */
+        --accent-hover: #0062cc;
+        --correct: #34c759; /* Apple Green */
+        --wrong: #ff3b30; /* Apple Red */
+        --glass-blur: blur(20px);
+        --luxury-gold: #b8860b;
       }
+
       body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background-color: var(--bg-light);
+        /* Galaxy Gradient tinh tế hơn */
+        background-image:
+          radial-gradient(
+            circle at 0% 0%,
+            rgba(255, 182, 193, 0.2),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            rgba(135, 206, 235, 0.2),
+            transparent 40%
+          );
+        background-attachment: fixed;
+        color: var(--text-main);
         margin: 0;
-        padding: 20px;
-        font-family: "Segoe UI", sans-serif;
-        background: var(--bg);
-        color: var(--text);
+        padding: 40px 20px;
         display: flex;
         justify-content: center;
         min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        box-sizing: border-box;
       }
+
       .container {
-        max-width: 800px;
         width: 100%;
+        max-width: 680px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        position: relative;
+        z-index: 1;
       }
+
+      /* TỰA ĐỀ */
+      .header {
+        text-align: center;
+      }
+
       h1 {
-        text-align: center;
-        color: var(--primary);
-        margin-bottom: 5px;
-        text-transform: uppercase;
+        margin: 0;
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        background: linear-gradient(135deg, #1c1c1e 0%, #3a3a3c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
-      .sub {
-        text-align: center;
-        color: #6b7280;
-        margin-bottom: 20px;
-        font-size: 14px;
-      }
-      .card {
-        background: var(--card-bg);
-        padding: 30px;
-        border-radius: 16px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        border-top: 5px solid var(--primary);
-      }
-      .stats {
+
+      /* TABS */
+      .tabs {
         display: flex;
-        justify-content: space-between;
-        font-weight: bold;
-        color: #6b7280;
-        margin-bottom: 20px;
+        background: rgba(118, 118, 128, 0.12);
+        padding: 4px;
+        border-radius: 18px;
+        width: max-content;
+        margin: 0 auto;
       }
-      .question {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 25px;
-        line-height: 1.5;
-        color: #111827;
-      }
-      .options {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-      @media (min-width: 600px) {
-        .options {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-      button {
-        background: #f9fafb;
-        border: 2px solid #e5e7eb;
-        padding: 15px;
-        border-radius: 10px;
-        text-align: left;
+
+      .tab {
+        padding: 8px 20px;
+        text-align: center;
+        border-radius: 14px;
         cursor: pointer;
-        font-size: 16px;
-        color: var(--text);
-        transition: 0.2s;
-        display: flex;
-        align-items: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-main);
+        transition: all 0.2s ease;
       }
-      button:hover:not(:disabled) {
-        border-color: var(--primary);
-        background: #e0f2fe;
+
+      .tab.active {
+        background: white;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
       }
-      button:disabled {
-        opacity: 0.9;
-        cursor: default;
+
+      /* PANEL CHÍNH */
+      .glass-panel {
+        background: var(--card-bg);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
       }
-      .correct {
-        background: #d1fae5 !important;
-        border-color: var(--correct) !important;
-        color: #064e3b !important;
-        font-weight: bold;
-      }
-      .wrong {
-        background: #fee2e2 !important;
-        border-color: var(--wrong) !important;
-        color: #991b1b !important;
-      }
-      .feedback {
-        margin-top: 25px;
-        padding: 20px;
-        background: #fffbeb;
-        border-radius: 8px;
-        border-left: 5px solid var(--accent);
+
+      /* LEARN MODE LIST */
+      #learnMode {
         display: none;
       }
-      .nav-btn {
-        width: 100%;
-        background: var(--primary);
-        color: white;
-        border: none;
-        font-weight: bold;
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 20px;
-        text-align: center;
-        cursor: pointer;
-        font-size: 16px;
+
+      .word-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       }
-      .nav-btn:hover {
-        opacity: 0.9;
+      .word-item:last-child {
+        border-bottom: none;
+      }
+
+      .word-en {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-main);
+      }
+      .word-vi {
+        color: var(--text-sub);
+        font-size: 14px;
+      }
+
+      /* SRS INDICATORS */
+      .srs-badge {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 6px;
+        text-transform: uppercase;
+      }
+      .badge-new {
+        background: rgba(0, 122, 255, 0.1);
+        color: var(--accent);
+      }
+      .badge-learning {
+        background: rgba(255, 149, 0, 0.1);
+        color: #ff9500;
+      }
+      .badge-master {
+        background: rgba(52, 199, 89, 0.1);
+        color: var(--correct);
+      }
+
+      /* PROGRESS BAR */
+      .progress-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+      .stat-card {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.5);
+        padding: 12px;
+        border-radius: 16px;
+        text-align: center;
+      }
+      .stat-val {
+        font-size: 18px;
+        font-weight: 800;
+        display: block;
+      }
+      .stat-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: var(--text-sub);
+        font-weight: 600;
+      }
+
+      /* CÂU HỎI */
+      .question-label {
+        color: var(--text-sub);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      .question-content {
+        text-align: center;
+        margin-bottom: 40px;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .q-word-main {
+        font-size: 42px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: var(--text-main);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      /* OPTIONS GRID */
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .opt-btn {
+        padding: 18px 24px;
+        background: white;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        border-radius: 16px;
+        text-align: left;
+        cursor: pointer;
+        color: var(--text-main);
+        font-size: 16px;
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+      }
+
+      .opt-btn:hover:not(:disabled) {
+        transform: scale(1.02);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        border-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .opt-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      .opt-shortcut {
+        background: rgba(0, 0, 0, 0.06);
+        color: var(--text-sub);
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-weight: 700;
+      }
+
+      /* TYPE INPUT */
+      .type-input {
+        width: 100%;
+        padding: 16px;
+        font-size: 20px;
+        font-weight: 600;
+        border: 2px solid transparent;
+        border-radius: 16px;
+        background: white;
+        color: var(--text-main);
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        outline: none;
+        transition: all 0.3s ease;
+      }
+      .type-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+      }
+
+      /* LISTEN BUTTON */
+      .listen-btn {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 20px rgba(0, 122, 255, 0.3);
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .listen-btn:hover {
+        transform: scale(1.1);
+      }
+      .listen-btn:active {
+        transform: scale(0.92);
+      }
+
+      /* FEEDBACK */
+      .feedback-msg {
+        text-align: center;
+        margin-top: 20px;
+        font-weight: 600;
+        font-size: 16px;
+        height: 24px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .feedback-msg.show {
+        opacity: 1;
+      }
+
+      /* ANIMATIONS */
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95) translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      .animate-pop {
+        animation: popIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Ôn Tập KHVLĐC</h1>
-      <div class="sub">design by pham van thanh</div>
+      <div class="header">
+        <h1>Speed Run</h1>
+      </div>
 
-      <div class="card">
-        <div class="stats">
-          <span>Câu: <span id="qCount">1/0</span></span>
-          <span>Điểm: <span id="score">0</span></span>
-        </div>
+      <div class="tabs">
+        <div class="tab" onclick="app.switchTab('learn')">Thư viện</div>
+        <div class="tab active" onclick="app.switchTab('test')">Luyện tập</div>
+      </div>
 
-        <div class="question" id="qText">Loading...</div>
-        <div class="options" id="optContainer"></div>
+      <div id="learnMode" class="glass-panel animate-pop">
+        <div id="wordListContent"></div>
+      </div>
 
-        <div class="feedback" id="feedback">
-          <div
-            style="font-weight: bold; color: var(--accent); margin-bottom: 5px"
-          >
-            💡 Giải thích:
+      <div id="testMode" class="glass-panel animate-pop">
+        <div class="progress-container">
+          <div class="stat-card">
+            <span
+              class="stat-val"
+              id="statMastered"
+              style="color: var(--correct)"
+              >0</span
+            >
+            <span class="stat-label">Mastered</span>
           </div>
-          <div id="explain"></div>
+          <div class="stat-card">
+            <span
+              class="stat-val"
+              id="statLearning"
+              style="color: var(--accent)"
+              >0</span
+            >
+            <span class="stat-label">Learning</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" id="statDue" style="color: var(--wrong)"
+              >0</span
+            >
+            <span class="stat-label">Due Now</span>
+          </div>
         </div>
 
-        <button
-          class="nav-btn"
-          id="nextBtn"
-          onclick="nextQ()"
-          style="display: none"
-        >
-          Câu tiếp theo ➜
-        </button>
+        <div id="quizContainer">
+          <div class="question-label" id="qLabel">...</div>
+          <div class="question-content" id="qContent">...</div>
+          <div class="options-grid" id="testOptions"></div>
+        </div>
+
+        <div class="feedback-msg" id="testFeedback"></div>
       </div>
     </div>
 
     <script>
-      const DATA = [
-        {
-          q: "1-Liên kết kim loại trong vật liệu là liên kết được tạo ra:",
-          o: [
-            "a-Giữa các ion dương và các điện tử",
-            "b-Giữa các điện tử tự do và các ion dương",
-            "c-Giữa các proton và điện tử tự do",
-            "d-Giữa các nguyên tử trong kim loại",
-          ],
-          a: 1,
-          e: "Liên kết kim loại là lực hút tĩnh điện giữa các ion dương ở nút mạng và khí quyển điện tử tự do.",
-        },
-        {
-          q: "2-Liên kết ion trong vật liệu là do:",
-          o: [
-            "a-Tương tác giữa các ion tạo thành",
-            "b-Lực hút giữa các ion tạo thành",
-            "c-Lực hút tĩnh điện giữa các ion dương và ion âm",
-            "d-Lực hút và lực đẩy giữa các ion",
-          ],
-          a: 2, // c
-          e: "Liên kết ion bản chất là lực hút tĩnh điện giữa các ion mang điện trái dấu (âm và dương).",
-        },
-        {
-          q: "3-Trong mẫu đồng (Cu) nguyên chất có các dạng liên kết sau:",
-          o: [
-            "a-Kim loại và đồng hóa trị",
-            "b-ion và đồng hóa trị",
-            "c-Kim loại và liên kết ion",
-            "d-Kim loại",
-          ],
-          a: 3, // d
-          e: "Đồng (Cu) là kim loại nguyên chất nên chỉ tồn tại liên kết kim loại.",
-        },
-        {
-          q: "4-Mạng tinh thể là:",
-          o: [
-            "a-Mạng của các nguyên tử trong tinh thể",
-            "b-Mô hình không gian mô tả sắp xếp của chất điểm trong tinh thể",
-            "c-Mô hình mô tả quy luật hình học của tinh thể",
-            "d-Mạng của các nguyên tử hoặc phân tử trong vật liệu",
-          ],
-          a: 1, // b
-          e: "Mạng tinh thể là mô hình không gian mô tả quy luật sắp xếp tuần hoàn của các chất điểm.",
-        },
-        {
-          q: "5-Ô cơ sở của mạng tinh thể là:",
-          o: [
-            "a-Khối thể tích nhỏ nhất có cách sắp xếp chất điểm đại diện cho mạng tinh thể",
-            "b-Đơn vị thể tích của mạng tinh thể",
-            "c-Khối thể tích nhỏ nhất của mạng tinh thể",
-            "d-Một phần nhỏ bất kỳ của mạng",
-          ],
-          a: 0, // a
-          e: "Ô cơ sở là phần nhỏ nhất mang đầy đủ tính chất đối xứng và cấu trúc đặc trưng của toàn mạng.",
-        },
-        {
-          q: "6-Các kiểu mạng thường gặp trong vật liệu kim loại là:",
-          o: [
-            "a-Lập phương tâm mặt và sáu phương xếp chặt",
-            "b-Lập phương tâm mặt, lập phương tâm khối và sáu phương xếp chặt",
-            "c-Lập phương tâm mặt, lập phương đơn giản và sáu phương",
-            "d-Chính phương, lập phương tâm mặt và lập phương tâm khối",
-          ],
-          a: 1, // b
-          e: "Ba kiểu mạng phổ biến nhất của kim loại là: A1 (LPTM), A2 (LPTK) và A3 (Sáu phương xếp chặt).",
-        },
-        {
-          q: "7-Sắt (Fe) ở nhiệt độ trong phòng có kiểu mạng tinh thể:",
-          o: [
-            "a- Lập phương tâm mặt",
-            "b- Chính phương tâm khối",
-            "c- Lập phương tâm khối",
-            "d- Sáu phương xếp chặt",
-          ],
-          a: 2, // c
-          e: "Ở nhiệt độ thường, Sắt (Fe alpha) có cấu trúc Lập phương tâm khối (A2/BCC).",
-        },
-
-        // --- CÂU 26 ĐẾN 40 ---
-        {
-          q: "26-Các tính chất cơ lý hóa của đơn tinh thể theo các phương khác nhau là không giống nhau. Tính chất này gọi là:",
-          o: [
-            "a-Tính đẳng hướng",
-            "b-Tính dị hướng",
-            "c-Tính vô hướng",
-            "d-Tính dị trục",
-          ],
-          a: 1, // b
-          e: "Dị hướng (Anisotropy) là hiện tượng tính chất vật liệu thay đổi tùy theo phương đo.",
-        },
-        {
-          q: "27 – Đặc điểm cơ tính quan trọng nhất của vật liệu kim loại là:",
-          o: [
-            "a- Độ bền thấp, độ dẻo cao",
-            "b- Độ dai phá hủy cao",
-            "c- Độ bền và độ cứng cao",
-            "d- Độ cứng và tính chịu mài mòn cao",
-          ],
-          a: 3, // c
-          e: "Kim loại thường được đặc trưng bởi sự kết hợp tốt giữa độ bền và độ cứng (so với polyme) và độ dẻo (so với gốm).",
-        },
-        {
-          q: "28-Liên kết Van der Waals thường gặp nhất trong vật liệu nào:",
-          o: ["a- kim loại", "b- ceramic", "c- polyme", "d- compozit"],
-          a: 2, // c
-          e: "Liên kết yếu Van der Waals thường liên kết các mạch phân tử polymer với nhau.",
-        },
-        {
-          q: "29- Đặc điểm chung của vật liệu có liên kết ion và đồng hóa trị:",
-          o: [
-            "a- độ bền cao, độ cứng cao",
-            "b- độ dai phá hủy cao",
-            "c- cứng, giòn và nhiệt độ chảy cao",
-            "d- độ bền thấp, nhiệt độ chảy thấp",
-          ],
-          a: 2, // c
-          e: "Đây là đặc điểm của vật liệu Gốm (Ceramic): Rất cứng, nhiệt độ nóng chảy cao nhưng rất giòn.",
-        },
-        {
-          q: "30- Cấu trúc tinh thể thường gặp nhất trong vật liệu nào:",
-          o: [
-            "a- polyme và thủy tinh thường",
-            "b- ceramic và polyme",
-            "c- kim loại",
-            "d- tất cả các loại vật liệu",
-          ],
-          a: 2, // c
-          e: "Kim loại hầu như luôn ở trạng thái tinh thể. Polyme thường bán tinh thể, thủy tinh là vô định hình.",
-        },
-        {
-          q: "31- Trong các mạng tinh thể kim loại thường gặp, số nguyên tử trong 1 ô cơ sở của mạng nào lớn nhất:",
-          o: [
-            "a- Lập phương tâm mặt (A1)",
-            "b- Như nhau cả",
-            "c- Lập phương tâm khối (A2)",
-            "d- Sáu phương xếp chặt (A3)",
-          ],
-          a: 3, // a
-          e: "Mạng A1 (FCC) có 4 nguyên tử/ô. Mạng A2 (BCC) có 2 nguyên tử/ô. (Lưu ý: Nếu xét ô lục giác là 6, nhưng ô cơ sở nguyên thủy lục giác là 2. Trong các bài tập so sánh A1/A2 thì A1 lớn hơn).",
-        },
-        {
-          q: "32- Trong mạng lập phương tâm khối (A2), các nguyên tử xếp dày đặc nhất theo phương và mặt nào:",
-          o: [
-            "a- hệ phương <111> và hệ mặt (110)",
-            "b- hệ phương <2110>(gạch đầu) và hệ mặt (0001)",
-            "c- hệ phương <110> và hệ mặt (111)",
-            "d- hệ phương <1120> và hệ mặt (1211)",
-          ],
-          a: 0, // a
-          e: "Mạng BCC (A2): Phương xếp chặt là đường chéo khối <111>, mặt mật độ cao nhất là {110}.",
-        },
-        {
-          q: "33- Trong mạng lập phương tâm mặt (A1), các nguyên tử xếp dày đặc nhất theo phương và mặt nào:",
-          o: [
-            "a- hệ phương <111> và hệ mặt (110)",
-            "b- hệ phương <2110> (gạch đầu ) và hệ mặt (0001)",
-            "c- hệ phương <110> và hệ mặt (111)",
-            "d- hệ phương <1120> và hệ mặt (1211)",
-          ],
-          a: 2, // c
-          e: "Mạng FCC (A1): Phương xếp chặt là đường chéo mặt <110>, mặt xếp chặt là {111}.",
-        },
-        {
-          q: "34- Lỗ hổng lớn nhất trong mạng tinh thể A1 (Lập phương tâm mặt) là loại:",
-          o: ["a- 4 mặt", "b- 8 mặt", "c- như nhau", "d- tùy theo kim loại"],
-          a: 1, // b
-          e: "Trong mạng FCC (A1), lỗ hổng bát diện (8 mặt) lớn hơn lỗ hổng tứ diện (4 mặt).",
-        },
-        {
-          q: "34- Lỗ hổng lớn nhất trong mạng tinh thể A2 (Lập phương tâm khối) là loại:",
-          o: ["a- 4 mặt", "b- 8 mặt", "c- như nhau", "d- tùy theo kim loại"],
-          a: 0, // a
-          e: "Trong mạng BCC (A2), lỗ hổng tứ diện (4 mặt) cho phép chứa nguyên tử tạp chất dễ hơn lỗ hổng 8 mặt.",
-        },
-        {
-          q: "35- Mạng tinh thể A1 có mật độ xếp và số nguyên tử trong 1 ô cơ sở là:",
-          o: ["a-68% & 2", "b-74% & 4", "c-68% & 4", "d-74% & 2"],
-          a: 1, // b
-          e: "Mạng A1 (FCC): Mật độ xếp chặt 74%, số nguyên tử n=4.",
-        },
-        {
-          q: "36- Mạng tinh thể A2 có mật độ xếp và số nguyên tử trong 1 ô cơ sở là:",
-          o: ["a-68% & 2", "b-74% & 4", "c-68% & 4", "d-74% & 2"],
-          a: 0, // a
-          e: "Mạng A2 (BCC): Mật độ xếp 68%, số nguyên tử n=2.",
-        },
-        {
-          q: "37- Lệch biên có ảnh hưởng quan trọng nhất tới:",
-          o: [
-            "a-độ bền",
-            "b-quá trình kết tinh",
-            "c-điện trở",
-            "d-nhiệt độ chảy",
-          ],
-          a: 0, // a
-          e: "Sai lệch đường (lệch) quyết định cơ tính (độ bền, độ dẻo) của vật liệu.",
-        },
-        {
-          q: "38- Lệch xoắn có ảnh hưởng quan trọng nhất tới:",
-          o: [
-            "a-độ bền",
-            "b-quá trình kết tinh",
-            "c-điện trở",
-            "d-nhiệt độ chảy",
-          ],
-          a: 1, // a
-          e: "Tương tự lệch biên, lệch xoắn ảnh hưởng chủ yếu đến độ bền và biến dạng dẻo.",
-        },
-        {
-          q: "39- Số phối trí của mạng tinh thể A1 (Lập phương tâm mặt) là(đáp án ai bt gửi nhóm love ):",
-          o: ["a-4", "b-8", "c-12", "d-6"],
-          a: 2, // c
-          e: "Mạng A1 có số phối trí (số nguyên tử lân cận gần nhất) là 12.",
-        },
-        {
-          q: "40- Số phối trí của mạng tinh thể A2 (Lập phương tâm khối) là:",
-          o: ["a-4", "b-8", "c-12", "d-6"],
-          a: 1, // b
-          e: "Mạng A2 có số phối trí là 8.",
-        },
-        {
-          q: "1-Mầm tự sinh (mầm đồng thể) khi chuyển pha là:",
-          o: [
-            "a-Mầm được hình thành trong lòng pha mẹ",
-            "b-Mầm được hình thành và lớn lên trong lòng pha mẹ",
-            "c-Mầm được hình thành từ các nguyên tử của pha mẹ",
-            "d-Mầm có thành phần giống như pha mẹ",
-          ],
-          a: 0, // a
-          e: "",
-        },
-        {
-          q: "2-Mầm ký sinh (mầm dị thể) khi chuyển pha là:",
-          o: [
-            "a-Mầm lớn lên nhờ pha khác",
-            "b-Mầm được hình thành trên bề mặt pha rắn",
-            "c-Mầm được hình thành và lớn lên trên bề mặt pha rắn có sẵn",
-            "d-Mầm dạng chỏm cầu trên bề mặt vật rắn",
-          ],
-          a: 2, // c
-          e: "",
-        },
-        {
-          q: "3-Đối với các vật liệu kim loại thông dụng như Fe, Al, Cu thì hợp kim của chúng được dùng rộng rãi vì:",
-          o: [
-            "a-Chúng có độ bền, độ cứng, và độ dẻo cao",
-            "b-Chúng có tính công nghệ và tính tổng hợp cao",
-            "c-Chúng có độ bền, độ cứng và khả năng gia công cao",
-            "d-Chế tạo và gia công dễ hơn",
-          ],
-          a: 1, // b
-          e: "",
-        },
-        {
-          q: "4-Thép là vật liệu có khả năng biến dạng dẻo tốt vì:",
-          o: [
-            "a-Ở trạng thái nóng không phụ thuộc vào thành phần cacbon",
-            "b-Ở trạng thái nguội không phụ thuộc vào thành phần cacbon",
-            "c-Ở trạng thái nóng phụ thuộc vào thành phần cacbon",
-            "d-Ở trạng thái nóng lẫn trạng thái nguội không phụ thuộc vào thành phần cacbon",
-          ],
-          a: 3, // c
-          e: ".",
-        },
-        {
-          q: "5-Kết tinh lại trong vật liệu tinh thể đã qua biến dạng dẻo là gì?",
-          o: [
-            "a-Là quá trình sinh và phát triển các hạt tinh thể mới ít khuyết tật",
-            "b-Là quá trình chuyển sang cấu trúc kim lọai mới",
-            "c-Là một dạng chuyển pha ở trạng thái rắn",
-            "d-Là sự tiết ra pha tinh thể từ tổ chức nền",
-          ],
-          a: 0, // a
-          e: "Kết tinh lại là quá trình nung nóng để sinh ra các hạt mới không chứa ứng suất dư.",
-        },
-        {
-          q: "6-Thế nào là hợp kim?",
-          o: [
-            "a-Là vật thể được tạo thành bằng cách nấu chảy từ nhiều kim loại",
-            "b-Là hợp chất giữa nhiều nguyên tố kim loại",
-            "c-Là hợp chất giữa kim loại và á kim",
-            "d-Là hợp chất nhiều nguyên tố với các tính chất đặc trưng của kim loại",
-          ],
-          a: 3, // d
-          e: "Hợp kim là hệ nhiều nguyên tố (kim loại + kim loại/á kim) nhưng vẫn giữ tính chất kim loại.",
-        },
-        {
-          q: "7-Các cấu tử (nguyên) của một hệ hợp kim hoặc hợp chất có thể là:",
-          o: [
-            "a-Các kim loại hoặc á kim",
-            "b-Các nguyên tố hóa học",
-            "c-Các nguyên tố hóa học hoặc hợp chất hóa học ổn định",
-            "d-Các kim loại và hợp chất của chúng",
-          ],
-          a: 2, // c
-          e: "Cấu tử là thành phần độc lập nhỏ nhất, có thể là nguyên tố hoặc hợp chất hóa học bền vững.",
-        },
-        {
-          q: "8-Dung dịch rắn thay thế được hiểu là dung dịch rắn khi:",
-          o: [
-            "a-Nguyên tử các chất thay thế lẫn nhau trong mạng",
-            "b-Nguyên tử chất tan thay thế vị trí nút mạng trong mạng dung môi",
-            "c-Nguyên tử chất tan nằm trong mạng tinh thể dung môi",
-            "d-Nguyên tử chất tan thay thế một số vị trí nút mạng trong mạng dung môi",
-          ],
-          a: 3, // b
-          e: "Nguyên tử chất tan có kích thước tương đương và thay thế vị trí nút mạng của dung môi.",
-        },
-        {
-          q: "9-Dung dịch rắn xen kẽ là:",
-          o: [
-            "a-Pha rắn trong đó nguyên tử chất tan nằm ở các lỗ hổng trong mạng dung môi",
-            "b-Dung dịch rắn trong đó nguyên tử dung môi và chất tan nằm xen kẽ nhau",
-            "c-Dung dịch rắn trong đó nguyên tử chất tan nằm xen kẽ trong mạng dung môi",
-            "d-Pha rắn trong đó các loại nguyên tử nằm xen kẽ lẫn nhau",
-          ],
-          a: 1, // a
-          e: "Nguyên tử chất tan nhỏ (C, N, H...) chui vào lỗ hổng giữa các nguyên tử dung môi.",
-        },
-        {
-          q: "11-Dung dịch rắn hòa tan vô hạn được hiểu là:",
-          o: [
-            "a-Dung dịch rắn có thể hòa tan vô hạn vào chất khác",
-            "b-Dung dịch rắn có thể chứa một lượng bất kỳ nguyên tố hòa tan",
-            "c-Dung dịch rắn có hằng số mạng không thay đổi khi có chất tan",
-            "d-Dung dịch rắn khi nguyên tố hòa tan nằm ở vị trí bất kỳ trong mạng",
-          ],
-          a: 1, // b
-          e: "Hòa tan vô hạn nghĩa là tỷ lệ chất tan có thể từ 0% đến 100% mà vẫn giữ nguyên một kiểu mạng.",
-        },
-        {
-          q: "12-Khả năng hòa tan vô hạn có thể có ở:",
-          o: [
-            "a-Tất cả các loại dung dịch rắn",
-            "b-Dung dịch rắn xen kẽ và thay thế",
-            "c-Dung dịch rắn thay thế",
-            "d-Dung dịch rắn xen kẽ",
-          ],
-          a: 2, // c
-          e: "Chỉ dung dịch rắn thay thế mới có khả năng hòa tan vô hạn (khi cùng kiểu mạng, bán kính gần nhau...).",
-        },
-        {
-          q: "13- Khả năng hòa tan của dung dịch rắn xen kẽ có thể là:",
-          o: [
-            "a-Vô hạn hoặc có hạn",
-            "b-Vô hạn",
-            "c-Có hạn",
-            "d-Không xác định được",
-          ],
-          a: 2, // c
-          e: "Dung dịch rắn xen kẽ luôn có hạn vì số lượng lỗ hổng trong mạng tinh thể là có hạn.",
-        },
-        {
-          q: "14-Khi hòa tan một nguyên tố khác vào mạng tinh thể của kim lọai thì dung dịch rắn được tạo thành có xu thế:",
-          o: [
-            "a-Độ bền tăng, độ cứng tăng, độ dẻo giảm",
-            "b- Độ bền tăng, độ cứng tăng, độ dẻo tăng",
-            "c- Độ bền giảm, độ cứng giảm, độ dẻo giảm",
-            "d- Độ bền tăng, độ cứng giảm, độ dẻo giảm",
-          ],
-          a: 0, // a
-          e: "Hóa bền dung dịch rắn: Tăng bền, tăng cứng nhưng làm giảm độ dẻo.",
-        },
-        {
-          q: "15-Tổ chức tế vi của dung dịch rắn đồng nhất giữa 2 cấu tử A và B gồm:",
-          o: [
-            "a-Các hạt tinh thể A và B xen kẽ nhau",
-            "b-Các hạt tinh thể đồng pha",
-            "c-Pha B phân bố trong các tinh thể pha A",
-            "d-Pha A phân bố trong các tinh thể pha B",
-          ],
-          a: 1, // b
-          e: "Dung dịch rắn đồng nhất chỉ có 1 pha duy nhất.",
-        },
-        {
-          q: "16-Dung dịch rắn của chất tan B trong dung môi A có kiểu mạng tinh thể:",
-          o: [
-            "a-Của chất tan B",
-            "b-Khác A và khác B",
-            "c-Của dung môi A",
-            "d-Trung gian giữa A và B",
-          ],
-          a: 2, // c
-          e: "Dung dịch rắn luôn giữ kiểu mạng của dung môi.",
-        },
-        {
-          q: "17-So với Fe alpha, Fe gamma hòa tan được nhiều cacbon vì:",
-          o: [
-            "a- Fe gamma tồn tại ở nhiệt độ cao nên cacbon dễ khuếch tán",
-            "b- Fe gamma tồn tại ở nhiệt độ cao nên mạng có nhiều nút trống",
-            "c- Fe gamma có mật độ kém dày đặc hơn nên nhiều lỗ hổng hơn",
-            "d-Fe gamma có mật độ dày đặc hơn nhưng có những lỗ hổng to hơn",
-          ],
-          a: 3, // d
-          e: "Mạng FCC (Fe gamma) xếp chặt hơn nhưng lỗ hổng bát diện lớn hơn BCC (Fe alpha), chứa được C.",
-        },
-        {
-          q: "18- Các pha xen kẽ Cacbit, Nitrit, Borit thường được sử dụng để chế tạo:",
-          o: [
-            "a-Chi tiết máy chịu lực",
-            "b-Bệ máy chịu lực",
-            "c-Chi tiết chịu va đập",
-            "d-Dụng cụ cắt gọt và khuôn mẫu",
-          ],
-          a: 3, // d
-          e: "Các pha này có độ cứng rất cao (hợp kim cứng), dùng làm dao cắt.",
-        },
-        {
-          q: "19- Pha xen kẽ là pha được tạo thành giữa:",
-          o: [
-            "a-Kim loại M và á kim X với cấu trúc độc lập theo nguyên lý xen kẽ",
-            "b-Kim loại M và á kim X theo nguyên lý xen kẽ",
-            "c-Kim loại M và á kim X với thành phần xác định",
-            "d-Kim loại M và á kim X theo kiểu dung dịch rắn xen kẽ",
-          ],
-          a: 0, // c
-          e: "Pha xen kẽ (Hợp chất hóa học) có thành phần và cấu trúc tinh thể xác định, khác với pha nền.",
-        },
-        {
-          q: "20- Pha Hume-Rothery (hợp chất điện tử) là pha được tạo nên:",
-          o: [
-            "a-Giữa 2 nguyên tố theo quy tắc nồng độ điện tử",
-            "b-Giữa 2 kim lọai theo quy tắc nồng độ điện tử",
-            "c-Giữa 2 nguyên tố có điện tử tự do",
-            "d-Giữa kim lọai và 1 nguyên tố khác có nồng độ điện tử xác định",
-          ],
-          a: 1, // a
-          e: "Pha điện tử được xác định bởi tỷ lệ giữa số điện tử hóa trị và số nguyên tử.",
-        },
-        {
-          q: "21- Các hợp chất cacbit, nitrit của các kim loại (ví dụ TiC, WC) thông thường là:",
-          o: [
-            "a-Các pha hợp chất hóa học hóa trị",
-            "b-Các pha điện tử",
-            "c-Các pha xen kẽ",
-            "d-Hợp chất ion",
-          ],
-          a: 2, // c
-          e: "TiC, WC là các pha xen kẽ điển hình (Hägg phases).",
-        },
-        {
-          q: "22-Phản ứng cùng tinh là phản ứng khi:",
-          o: [
-            "a-Từ pha lỏng tạo ra 2 pha rắn khác nhau",
-            "b-Từ 1 pha rắn tạo ra 2 pha rắn khác nhau",
-            "c-Từ 1 pha lỏng cùng lúc tạo ra 2 hay nhiều pha rắn khác nhau",
-            "d-Từ 1 pha rắn tạo ra 2 pha lỏng",
-          ],
-          a: 2, // c
-          e: "Cùng tinh (Eutectic): Lỏng -> Rắn 1 + Rắn 2.",
-        },
-        {
-          q: "23-Phản ứng cùng tích được hiểu là phản ứng khi:",
-          o: [
-            "a-Từ 1 pha rắn tạo thành 2 pha rắn khác",
-            "b-Từ 1 pha rắn tạo thành cùng lúc 2 hay nhiều pha rắn khác",
-            "c-Từ 1 pha lỏng cùng lúc tạo thành 2 hoặc nhiều pha rắn khác",
-            "d-Từ 1 pha rắn và 1 pha lỏng tạo thành 2 pha rắn khác",
-          ],
-          a: 1, // b
-          e: "Cùng tích (Eutectoid): Rắn 1 -> Rắn 2 + Rắn 3.",
-        },
-
-        // --- GIẢN ĐỒ FE-C ---
-        {
-          q: "27-Hợp kim Fe-C có thành phần 4,1%C gọi là:",
-          o: [
-            "a-Gang trước cùng tinh",
-            "b-Gang cùng tinh",
-            "c-Thép trước cùng tích",
-            "d-Thép sau cùng tích",
-          ],
-          a: 0, // a
-          e: "Dưới 4.3%C là Gang trước cùng tinh (Hypoeutectic).",
-        },
-        {
-          q: "28-Hợp kim Fe-C có thành phần 4,8%C gọi là:",
-          o: [
-            "a-Gang trước cùng tinh",
-            "b-Gang sau cùng tinh",
-            "c-Thép trước cùng tích",
-            "d-Thép sau cùng tích",
-          ],
-          a: 1, // b
-          e: "Trên 4.3%C là Gang sau cùng tinh (Hypereutectic).",
-        },
-        {
-          q: "29-Hợp kim Fe-C có thành phần 4,3%C gọi là:",
-          o: [
-            "a-Gang trước cùng tinh",
-            "b-Gang cùng tinh",
-            "c-Thép trước cùng tích",
-            "d-Thép sau cùng tích",
-          ],
-          a: 1, // b
-          e: "4.3%C là điểm cùng tinh (Eutectic) của hệ Fe-C.",
-        },
-        {
-          q: "30-Trong hợp kim Fe-C, pha Ferit là:",
-          o: [
-            "a-Dung dịch rắn của C trong Fe gamma",
-            "b- Dung dịch rắn của C trong Fe alpha",
-            "c- Dung dịch rắn của C trong Fe beta",
-            "d-Hợp chất của C và Fe",
-          ],
-          a: 1, // b
-          e: "Ferit = C hòa tan trong Fe alpha (BCC).",
-        },
-        {
-          q: "31-Trong hợp kim Fe-C, pha auxtenit (A) là dung dịch rắn của C trong:",
-          o: ["a- Fe alpha", "b- Fe beta", "c- Fe gamma", "d-Fe delta"],
-          a: 2, // c
-          e: "Auxtenit = C hòa tan trong Fe gamma (FCC).",
-        },
-        {
-          q: "32- Trong hợp kim Fe-C, pha Xêmentit (Xê) là:",
-          o: ["a-Fe3C", "b-Fe2C", "c-FeC", "d-FexCy"],
-          a: 0, // a
-          e: "Xêmentit là hợp chất Fe3C.",
-        },
-        {
-          q: "33-Tổ chức péclit trong hợp kim Fe-C là:",
-          o: [
-            "a-Hỗn hợp cùng tích của ferit và auxtenit",
-            "b-Hỗn hơp cùng tinh của ferit và xêmentit",
-            "c-Hỗn hợp cơ học của ferit và xêmentit",
-            "d-Hỗn hợp cùng tích của ferit và xêmentit",
-          ],
-          a: 3, // d
-          e: "Péclit là sản phẩm cùng tích (ferit + xêmentit).",
-        },
-        {
-          q: "34-Tổ chức lêđêburit trên nhiệt độ cùng tích trong hợp kim Fe–C là:",
-          o: [
-            "a-Hỗn hợp cơ học của auxtenit và xêmentit",
-            "b-Hỗn hợp cùng tinh của auxtenit và xêmentit",
-            "c-Hỗn hợp cơ học của ferit và xêmentit",
-            "d-Hỗn hợp cùng tinh của auxtenit và ferit",
-          ],
-          a: 1, // b
-          e: "Lêđêburit (nhiệt độ cao) là hỗn hợp cùng tinh của Auxtenit và Xêmentit.",
-        },
-        {
-          q: "35-Phản ứng cùng tinh của hợp kim Fe-C xẩy ra ở nhiệt độ:",
-          o: ["a-1300°C", "b-1247°C", "c-1147°C", "d-927°C"],
-          a: 2, // c
-          e: "1147°C là đường cùng tinh.",
-        },
-        {
-          q: "36- Phản ứng cùng tích của hợp kim Fe-C xẩy ra ở nhiệt độ:",
-          o: ["a-827°C", "b-727°C", "c-927°C", "d-700°C"],
-          a: 1, // b
-          e: "727°C là đường cùng tích (biến đổi Austenit thành Péclit).",
-        },
-        {
-          q: "37- Phản ứng cùng tích trong hợp kim Fe-C xẩy ra như sau:",
-          o: [
-            "a- A1,8 -> F + Xe",
-            "b- A -> F + Xe",
-            "c- A2.14 -> F + Xe",
-            "d- A0.8 -> L + Xe",
-          ],
-          a: 1,
-          e: "Cùng tích: Auxtenit phân rã thành Ferit và Xêmentit.",
-        },
-        {
-          q: "38- Phản ứng cùng tinh trong hợp kim Fe-C xẩy ra như sau:",
-          o: [
-            "a- L4.3 -> A2.14 + Xe",
-            "b- L3.4 -> A2.14 + Xe",
-            "c- L4.3 -> F + Xe",
-            "d- L3.4 -> A + Xe",
-          ],
-          a: 0,
-          e: "Cùng tinh: Lỏng phân rã thành Auxtenit và Xêmentit.",
-        },
-        {
-          q: "39 -Theo tổ chức tế vi thì thép là hợp kim Fe-C:",
-          o: [
-            "a-Có tổ chức peclit",
-            "b-Có peclit và không có lêđêburit",
-            "c-Không có lêđêburit",
-            "d-Có peclit và ferit",
-          ],
-          a: 2, // c
-          e: "Thép không có tổ chức Lêđêburit (trừ thép hợp kim cao), Gang thì có.",
-        },
-        {
-          q: "40-Theo tổ chức tế vi thì gang là hợp kim Fe-C:",
-          o: [
-            "a-Có peclit và lêđêburit",
-            "b-Có Xêmentit và Lêđêburit",
-            "c-Có tổ chức lêđêburit",
-            "d-Có lêđêburit và không có peclit",
-          ],
-          a: 2, // c
-          e: "Đặc trưng của Gang trắng là sự xuất hiện của Lêđêburit.",
-        },
-        {
-          q: "41-Theo tổ chức tế vi thép cacbon với 0,8%C được gọi là thép:",
-          o: [
-            "a-Sau cùng tích",
-            "b-Cùng tích",
-            "c-Trước cùng tích",
-            "d-Cùng tinh",
-          ],
-          a: 1, // b
-          e: "0.8%C là điểm cùng tích (Péclit).",
-        },
-        {
-          q: "42- Theo tổ chức tế vi thép cacbon < 0,8%C được gọi là thép:",
-          o: [
-            "a-Sau cùng tích",
-            "b-Trước cùng tinh",
-            "c-Trước cùng tích",
-            "d-Sau cùng tinh",
-          ],
-          a: 2, // c
-          e: "Dưới 0.8%C là Thép trước cùng tích (Hypoeutectoid).",
-        },
-        {
-          q: "43- Theo tổ chức tế vi thép cacbon > 0,8%C được gọi là thép:",
-          o: [
-            "a-Sau cùng tinh",
-            "b-Sau cùng tích",
-            "c-Trước cùng tích",
-            "d-Trước cùng tinh",
-          ],
-          a: 1, // b
-          e: "Trên 0.8%C là Thép sau cùng tích (Hypereutectoid).",
-        },
-        {
-          q: "44- Gang trắng là gang có tổ chức:",
-          o: [
-            "a-Màu trắng",
-            "b-Phù hợp với Fe-C cân bằng",
-            "c-Lêđêburit",
-            "d-Lêđêburit và peclit",
-          ],
-          a: 2, // c
-          e: "Gang trắng chứa Lêđêburit, mặt gãy sáng màu.",
-        },
-        {
-          q: "45- Gang cùng tinh là gang:",
-          o: [
-            "a-Có tổ chức 100% lêđêburit",
-            "b-Có phản ứng cùng tinh khi kết tinh",
-            "c-Có tổ chức lêđêburit và xêmentit",
-            "d-Có phản ứng cùng tinh không cân bằng",
-          ],
-          a: 0, // a
-          e: "Gang cùng tinh (4.3%C) có tổ chức 100% Lêđêburit.",
-        },
-        {
-          q: "46- Mn, C đều có thể hòa tan trong Fe để tạo các dung dịch rắn Fe(Mn) và Fe(C). Hãy xác định đó là những dung dịch rắn gì?",
-          o: [
-            "a-Cả hai đều là dung dịch rắn thay thế",
-            "b- Cả hai đều là dung dịch rắn xen kẽ",
-            "c- Fe(Mn) là dung dịch rắn thay thế",
-            "d- Fe(C) là dung dịch rắn thay thế",
-          ],
-          a: 2, // c
-          e: "Mn (kim loại, bán kính gần Fe) -> Thay thế. C (á kim, nhỏ) -> Xen kẽ.",
-        },
-        {
-          q: "47- Nếu giữa một kim loại và một kim loại khác tạo thành dung dịch rắn thì đó là:",
-          o: [
-            "a-Dung dịch rắn thay thế",
-            "b-Dung dịch rắn xen kẽ",
-            "c-Còn phải xét đến tương quan kích thước",
-            "d-Không thể tạo thành dung dịch rắn",
-          ],
-          a: 0, // a
-          e: "Kim loại với kim loại thường tạo dung dịch rắn thay thế (do bán kính nguyên tử không chênh lệch quá nhiều).",
-        },
-        {
-          q: "48- Nếu pha một ít Al vào Cu (tổ chức nhận được là đơn pha dung dịch rắn) thì:",
-          o: [
-            "a-Độ bền tăng, độ dẫn điện giảm",
-            "b-Độ bền tăng, độ dẫn điện tăng",
-            "c-Độ bền giảm, độ dẫn điện tăng",
-            "d-Độ bền giảm, độ dẫn điện giảm",
-          ],
-          a: 0, // a
-          e: "Dung dịch rắn: Cơ tính tăng, Lý tính (dẫn điện/nhiệt) giảm.",
-        },
-        {
-          q: "49-Về cơ tính, pha auxtenit (mạng lập phương tâm mặt) có đặc điểm là:",
-          o: [
-            "a-Rất cứng",
-            "b-Khó biến dạng dẻo",
-            "c-Dễ biến dạng dẻo",
-            "d-Rất bền",
-          ],
-          a: 2, // c
-          e: "Mạng FCC (Auxtenit) có tính dẻo rất cao.",
-        },
-        {
-          q: "50-Về cơ tính, pha xêmentit (Fe3C) có đặc điểm là:",
-          o: ["a-Rất bền", "b-Rất cứng", "c-Rất mềm", "d-Rất dẻo"],
-          a: 1, // b
-          e: "Xêmentit là pha gốm, rất cứng và giòn.",
-        },
-        {
-          q: "51-Về cơ tính, tổ chức peclit có đặc điểm là:",
-          o: [
-            "a-Dễ biến dạng dẻo",
-            "b-Khó biến dạng dẻo",
-            "c-Có độ cứng cao",
-            "d-Có độ bền cao",
-          ],
-          a: 1, // d
-          e: "Peclit có độ bền và độ cứng tốt (cao hơn Ferit, thấp hơn Mactenxit).",
-        },
-        {
-          q: "52- Về cơ tính, tổ chức lêđêburit có đặc điểm là:",
-          o: [
-            "a-Có độ bền cao",
-            "b-Có độ cứng cao",
-            "c-Có độ dẻo cao",
-            "d-Có độ dai va đập cao",
-          ],
-          a: 1, // b
-          e: "Lêđêburit chứa nhiều Xêmentit nên rất cứng và giòn.",
-        },
-        {
-          q: "65-Đặc diểm của chuyển biến auxtenit- peclit trong thép sau cùng tích là:",
-          o: [
-            "a-Tạo trước xêmentit",
-            "b-Tạo trước ferit",
-            "c-Tạo thành xêmentit",
-            "d-Tạo thành ferit",
-          ],
-          a: 0, // a
-          e: "Thép sau cùng tích (>0.8%C) sẽ tiết ra Xêmentit II ở biên giới hạt trước khi chuyển biến thành Peclit.",
-        },
-        {
-          q: "66-Đối với hợp kim sắt - cacbon, mactenxit là:",
-          o: [
-            "a-Dung dịch rắn quá bão hòa của C trong Fe gamma",
-            "b-Dung dịch rắn bão hòa của C trong Fe gamma",
-            "c-Dung dịch rắn quá bão hòa của C trong Fe alpha",
-            "d- Dung dịch rắn bão hòa của C trong Fe alpha",
-          ],
-          a: 2, // c
-          e: "Mactenxit là dung dịch rắn quá bão hòa của C trong Fe alpha.",
-        },
-        {
-          q: "67-Mạng tinh thể của mactenxit là:",
-          o: [
-            "a-Lập phương tâm mặt",
-            "b-Chính phương tâm mặt",
-            "c-Lập phương tâm khối",
-            "d-Chính phương tâm khối",
-          ],
-          a: 3, // d
-          e: "Do C bị kẹt lại, mạng lập phương tâm khối bị méo thành Chính phương tâm khối.",
-        },
-        {
-          q: "68-Vị trí tương đối của chuyển biến auxtenit–bainit so với chuyển biến auxtenit – peclit và auxtenit – mactenxit:",
-          o: [
-            "a-Giống chuyển biến auxtenit – peclit",
-            "b-Giống chuyển biến auxtenit – mactenxit",
-            "c-Trung gian giữa chuyển biến auxtenit – peclit và auxtenit – mactenxit",
-            "d-Không có đặc điểm chung",
-          ],
-          a: 2, // c
-          e: "Bainit là chuyển biến trung gian (cả về nhiệt độ và cơ chế) giữa Peclit (khuếch tán) và Mactenxit (không khuếch tán).",
-        },
-        {
-          q: "1-Đối với các vật liệu kim loại thông dụng như Fe, Al, Cu thì hợp kim của chúng được dùng rộng rãi vì:",
-          o: [
-            "a-Chúng có độ bền, độ cứng, và độ dẻo cao",
-            "b-Chúng có tính công nghệ và tính tổng hợp cao",
-            "c-Chúng có độ bền, độ cứng và khả năng gia công cao",
-            "d-Chế tạo và gia công dễ hơn",
-          ],
-          a: 1, // b
-          e: "Hợp kim thường có cơ tính tổng hợp (bền, cứng) tốt hơn và tính công nghệ (đúc, cắt gọt...) tốt hơn kim loại nguyên chất.",
-        },
-        {
-          q: "2-Thép là vật liệu có khả năng biến dạng dẻo tốt vì:",
-          o: [
-            "a-Ở trạng thái nóng không phụ thuộc vào thành phần cacbon",
-            "b-Ở trạng thái nguội không phụ thuộc vào thành phần cacbon",
-            "c-Ở trạng thái nóng phụ thuộc vào thành phần cacbon",
-            "d-Ở trạng thái nóng lẫn trạng thái nguội không phụ thuộc vào thành phần cacbon",
-          ],
-          a: 3, // c
-          e: "Ở trạng thái nóng (vùng Auxtenit), thép rất dẻo. Tuy nhiên hàm lượng Carbon càng cao thì tính dẻo càng giảm.",
-        },
-        {
-          q: "3-Sở dĩ Auxtenit dẻo, dễ biến dạng dẻo là nhờ:",
-          o: [
-            "a-Có mạng lập phương tâm khối",
-            "b-Có mạng lập phương tâm mặt",
-            "c-Tồn tại ở nhiệt độ cao",
-            "d-Hòa tan được nhiều cacbon",
-          ],
-          a: 2, // b
-          e: "Mạng Lập phương tâm mặt (FCC) có 12 hệ trượt, nhiều hơn so với BCC, nên khả năng biến dạng dẻo tốt nhất.",
-        },
-        {
-          q: "4-So với trước khi biến dạng dẻo, sau khi biến dạng dẻo kim lọai sẽ có:",
-          o: [
-            "a-Độ bền cao hơn",
-            "b-Độ cứng cao hơn",
-            "c-Độ bền, độ cứng cao hơn nhưng độ dẻo độ dai giảm đi",
-            "d-Độ bền, độ cứng, dộ dẻo, độ dai đều tăng lên",
-          ],
-          a: 2, // c
-          e: "Đây là hiện tượng hóa bền biến dạng (Work Hardening): Tăng bền/cứng, giảm dẻo/dai.",
-        },
-        {
-          q: "5-Trong sản xuất bê tông cốt thép ứng suất trước (dự ứng lực), cốt thép trước khi đổ bê tông được kéo dãn dài thêm 6-8% là để:",
-          o: [
-            "a-Làm sạch gỉ để bám dính bê tông được tốt hơn",
-            "b-Làm tăng giới hạn bền",
-            "c-Làm tăng giới hạn chảy (đàn hồi)",
-            "d-Tiết kiệm thép",
-          ],
-          a: 1, // c
-          e: "Kéo thép vượt qua miền đàn hồi để gây biến dạng dẻo, làm tăng giới hạn chảy (nhờ hóa bền), giúp thép chịu lực tốt hơn.",
-        },
-        {
-          q: "6-Một cách tổng quát, định luật Hooke (phương trình cơ sở của biến dạng đàn hồi) nói lên quan hệ tuyến tính giữa:",
-          o: [
-            "a-Ứng suất kéo và độ biến dạng",
-            "b- Ứng suất nén và độ biến dạng",
-            "c-Ứng suất và độ biến dạng",
-            "d-Ứng suất tiếp và độ xê dịch",
-          ],
-          a: 2, // c
-          e: "Định luật Hooke: σ = E.ε (Ứng suất tỷ lệ thuận với biến dạng trong miền đàn hồi).",
-        },
-        {
-          q: "7-Biến dạng dẻo là:",
-          o: [
-            "a-Biến dạng không đàn hồi",
-            "b-Biến dạng dư",
-            "c-Biến dạng chảy dẻo",
-            "d-Biến dạng ở trạng thái dẻo",
-          ],
-          a: 1, // b
-          e: "Biến dạng dẻo là biến dạng vĩnh viễn (biến dạng dư) còn lại sau khi thôi tác dụng lực.",
-        },
-        {
-          q: "8-Quá trình trượt để gây ra biến dạng dẻo xảy ra dưới tác dụng của:",
-          o: [
-            "a-Ứng suất tiếp trong vật liệu",
-            "b- Ứng suất pháp trong vật liệu",
-            "c-Ứng suất tiếp trên mặt trượt",
-            "d-Ứng suất pháp trên mặt trượt",
-          ],
-          a: 2, // c
-          e: "Theo định luật Schmid, biến dạng dẻo xảy ra do Ứng suất tiếp (Tau) phân bố trên các mặt trượt.",
-        },
-        {
-          q: "9-Quá trình trượt (khi biến dạng dẻo) trong tinh thể lý tưởng xảy ra bằng cách:",
-          o: [
-            "a-Tạo cấp bậc trên mặt trượt",
-            "b-Các nguyên tử trên mặt trượt dịch chuyển về 2 phía ngược nhau",
-            "c-Các nguyên tử dịch chuyển đồng thời dọc theo mặt trượt 1 khoảng cách nguyên tử",
-            "d-Các nguyên tử trên bề mặt trượt dịch chuyển cùng một lúc",
-          ],
-          a: 1, // c (Lý thuyết trượt cứng/đồng thời - Theoretical strength)
-          e: "Trong tinh thể lý tưởng (không có lệch), để trượt cần bẻ gãy đồng loạt các liên kết, đòi hỏi ứng suất cực lớn.",
-        },
-        {
-          q: "10-Thế nào là hóa bền biến dạng?",
-          o: [
-            "a-Là sự tăng độ bền khi biến dạng",
-            "b-Là hiện tượng vật liệu sau biến dạng dẻo trở nên bền hơn",
-            "c-Là hiện tượng khó phá hủy khi biến dạng",
-            "d-Là sự tăng độ bền, độ cứng, giảm độ dẻo khi biến dạng",
-          ],
-          a: 3, // d
-          e: "Định nghĩa đầy đủ nhất: Biến dạng dẻo làm tăng bền, tăng cứng nhưng làm giảm độ dẻo.",
-        },
-        {
-          q: "12-Vật liệu kim loại sau khi biến dạng dẻo với mức độ đáng kể thường xuất hiện textua. Đó là:",
-          o: [
-            "a-Sự định hướng ưu tiên về phương mạng của các hạt",
-            "b-Sự định hướng ưu tiên của các hạt",
-            "c-Các hạt tinh thể sắp xếp theo một hướng",
-            "d-Các phương tinh thể sắp xếp song song nhau",
-          ],
-          a: 0, // a
-          e: "Textua là hiện tượng mạng tinh thể của các hạt bị xoay và định hướng theo phương gia công.",
-        },
-        {
-          q: "13-Tổ chức textua sau biến dạng dẻo ảnh hưởng đến các tính chất như:",
-          o: [
-            "a-Tạo nên dị hướng về cơ tính và lý tính",
-            "b-Làm cho độ bền không giống nhau ở các tinh thể khác nhau",
-            "c-Tạo ra sự không đồng đều về lý và hóa tính",
-            "d-Tạo ra sự không đồng đều tính chất nói chung",
-          ],
-          a: 0, // a
-          e: "Textua làm vật liệu có tính dị hướng (tính chất khác nhau theo các phương khác nhau).",
-        },
-        {
-          q: "16-Nhiều chi tiết máy sau khi chế tạo xong được phun bi (shot peening). Tác dụng chủ yếu của loại gia công này?",
-          o: [
-            "a-Làm sạch bề mặt",
-            "b-Làm nhẵn bóng bề mặt",
-            "c-Hóa bền biến dạng lớp bề mặt",
-            "d-Điều chỉnh kích thước",
-          ],
-          a: 2, // c
-          e: "Phun bi làm biến dạng dẻo lớp bề mặt, gây ứng suất dư nén, giúp tăng độ bền mỏi.",
-        },
-        {
-          q: "17-Phá hủy giòn của vật liệu được gọi là dạng phá hủy:(ko có time code nhiều đáp án , câu này 3 đáp án )",
-          o: [
-            "a-Xảy ra tức thời",
-            "b-Hầu như không có biến dạng dư",
-            "c-Kèm theo sự vỡ vụn của vật liệu",
-            "d-Có vết gãy dạng phẳng",
-          ],
-          a: 1, // b
-          e: "Đặc điểm nhận dạng quan trọng nhất của phá hủy giòn là không có (hoặc rất ít) biến dạng dẻo trước khi gãy.",
-        },
-        {
-          q: "18-Phá hủy dẻo của vật liệu là dạng phá hủy:(nhiều đáp án đúng nhưng code ngu nên thông cảm)",
-          o: [
-            "a-Xảy ra từ từ",
-            "b-Có tạo ra vùng thắt trên mẫu",
-            "c-Kèm theo biến dạng dư đáng kể",
-            "d-Vết gãy có dạng mặt côn",
-          ],
-          a: 2, // c
-          e: "Phá hủy dẻo luôn đi kèm biến dạng dư lớn (như thắt cổ chai).",
-        },
-        {
-          q: "19-Nguyên nhân dẫn đến phá hủy vật liệu là:",
-          o: [
-            "a-Sự tập trung ứng suất",
-            "b-Sự tồn tại các vết nứt",
-            "c-Sự hình thành và phát triển các vết nứt",
-            "d-Sự mất liên kết trong vật liệu",
-          ],
-          a: 2, // c
-          e: "Quá trình phá hủy bao gồm 2 giai đoạn chính: Tạo vết nứt và Phát triển vết nứt.",
-        },
-        {
-          q: "20-Trạng thái bề mặt như thế nào là tốt nhất để chi tiết có khả năng chịu mỏi cao?",
-          o: [
-            "a-Độ cứng bề mặt cao",
-            "b-Độ bóng bề mặt cao",
-            "c-Chứa ứng suất dư",
-            "d-Độ bóng cao và ứng suất dư nén",
-          ],
-          a: 3, // d
-          e: "Độ bóng cao giảm tập trung ứng suất, Ứng suất dư nén ép các vết nứt bề mặt lại.",
-        },
-        {
-          q: "21-Tại sao ứng suất dư nén ở lớp bề mặt có tác dụng làm tăng độ bền mỏi?",
-          o: [
-            "a-Vì làm tăng độ bền",
-            "b-Vì hạn chế phát triển vết nứt",
-            "c-Vì làm tăng độ sít chặt vật liệu",
-            "d-Vì hạn chế chuyển động của lệch",
-          ],
-          a: 3, // b
-          e: "Ứng suất nén làm khép kín các vết nứt tế vi trên bề mặt, ngăn chúng phát triển.",
-        },
-        {
-          q: "22-Vì sao môi trường ăn mòn thúc đẩy phá hủy mỏi?",
-          o: [
-            "a-Vì lớp sản phẩm ăn mòn làm yếu chi tiết",
-            "b-Vì lớp oxit có tính chống ăn mòn",
-            "c-Vì bề mặt ăn mòn nhấp nhô thúc đẩy tạo vết nứt mỏi",
-            "d-Vì ăn mòn tạo ra các vùng tập trung ứng suất",
-          ],
-          a: 2, // d
-          e: "Các vết rỗ do ăn mòn đóng vai trò là nơi tập trung ứng suất, khởi tạo vết nứt mỏi sớm.",
-        },
-        {
-          q: "23-Biến dạng dẻo trong đơn tinh thể xẩy ra bằng cách:",
-          o: [
-            "a-Trượt theo thể tích",
-            "b-Trượt trong các mặt tinh thể",
-            "c-Trượt theo các phương tinh thể",
-            "d-Trượt theo các mặt và phương tinh thể xác định",
-          ],
-          a: 3, // d
-          e: "Trượt xảy ra trên các mặt xếp chặt nhất và theo phương xếp chặt nhất (Hệ trượt).",
-        },
-        {
-          q: "24-Khi tác dụng lên đơn tinh thể một lực kéo hoặc nén, muốn biến dạng dẻo xẩy ra dễ dàng nhất thì mặt trượt phải có góc định hướng với ngoại lực:",
-          o: ["a-20 độ", "b-45 độ", "c-0 độ", "d-80 độ"],
-          a: 1, // b
-          e: "Theo định luật Schmid, ứng suất tiếp cực đại khi góc hợp bởi lực với mặt trượt và phương trượt là 45 độ.",
-        },
-        {
-          q: "25-Phương trượt ưu tiên trong mạng lập phương tâm mặt (A1) là:",
-          o: ["a-[110]", "b-[111]", "c-[100]", "d-[121]"],
-          a: 0, // a
-          e: "Trong FCC, phương trượt là đường chéo mặt [110].",
-        },
-        {
-          q: "26-Phương trượt ưu tiên trong mạng lập phương tâm khối (A2) là:",
-          o: ["a-[110]", "b-[111]", "c-[100]", "d-[121]"],
-          a: 1, // b
-          e: "Trong BCC, phương trượt là đường chéo khối [111].",
-        },
-        {
-          q: "27-Trong số Al, Fe, Zn, Ag khả năng biến dạng dẻo của kim loại nào là tốt nhất?",
-          o: [
-            "a-Al (lập phương tâm mặt)",
-            "b-Zn (sáu phương xếp chặt)",
-            "c-Fe (lập phương tâm khối)",
-            "d-Ti (sáu phương)",
-          ],
-          a: 0, // a
-          e: "Mạng Lập phương tâm mặt (Al, Ag, Cu) có độ dẻo cao nhất. (Ag dẻo hơn Al nhưng trong đáp án này chọn A là đại diện FCC).",
-        },
-        {
-          q: "28-Kéo một sợi dây đồng có d=2mm lần lượt qua các lỗ 1,9mm rồi 1,8mm. Ứng suất để kéo dây của lần sau so với lần trước:",
-          o: ["a-Tăng", "b-Giảm", "c-Không đổi", "d-Giảm mạnh"],
-          a: 0, // a
-          e: "Do hóa bền biến dạng, kim loại cứng hơn sau mỗi lần kéo, cần lực lớn hơn để tiếp tục biến dạng.",
-        },
-        {
-          q: "29-Gập đảo nhiều lần sợi kim loại, nó sẽ gãy. Đây là kết quả của tính chất gì?",
-          o: [
-            "a-Độ bền tăng mạnh khi biến dạng dẻo",
-            "b-Độ cứng tăng mạnh khi biến dạng dẻo",
-            "c-Độ giòn tăng mạnh khi biến dạng dẻo",
-            "d-Mođun đàn hồi thay đổi đáng kể",
-          ],
-          a: 2, // c
-          e: "Hóa bền làm tăng độ giòn, khi vượt quá giới hạn, vật liệu sẽ gãy.",
-        },
-        {
-          q: "30-Độ bền của kim loại sau biến dạng dẻo được nâng cao chủ yếu là do:",
-          o: [
-            "a-Kích thước hạt nhỏ",
-            "b-Có tổ chức textua",
-            "c-Mật độ lệch cao",
-            "d-Tiết pha phân tán",
-          ],
-          a: 1, // c
-          e: "Cơ chế chính của hóa bền biến dạng là sự gia tăng mật độ lệch và sự giao cắt giữa các lệch.",
-        },
-        {
-          q: "31-Hãy chọn phương pháp đo độ cứng phù hợp nhất cho 1 chi tiết bằng thép sau khi được tôi cứng:",
-          o: ["a-HB", "b-HRA", "c-HRC", "d-HV"],
-          a: 2, // c
-          e: "HRC (Rockwell C) dùng mũi kim cương, tải trọng 150kg, chuyên đo thép tôi cứng.",
-        },
-        {
-          q: "32-Phá hủy mỏi là dạng phá hủy của vật liệu khi:",
-          o: [
-            "a-Tải trong thay đổi theo thời gian",
-            "b-Tải trọng thay đổi tuần hoàn theo thời gian rất nhiều lần",
-            "c-Tải trọng thay đổi theo hình sin",
-            "d-Tải trọng thay đổi theo chu kỳ",
-          ],
-          a: 1, // b
-          e: "Mỏi xảy ra do tải trọng lặp đi lặp lại (chu kỳ) trong thời gian dài.",
-        },
-        {
-          q: "34-Trong các phương pháp xử lý bề mặt: thấm C, mạ Cr, thấm N, phủ Epoxy thì phương pháp nào làm tăng đáng kể độ bền mỏi?",
-          o: ["a-Thấm C", "b-Mạ Cr", "c-Thấm N", "d-Phủ Epoxy"],
-          a: 1, // c
-          e: "Thấm Nitơ tạo lớp bề mặt rất cứng và có ứng suất dư nén cao, chống mỏi tốt nhất.",
-        },
-        {
-          q: "35-Các trục chịu tải trong điều kiện quay vận tốc lớn thường được lăn ép (roller burnishing) với mục đích:",
-          o: [
-            "a-Tăng độ cứng",
-            "b-Tăng độ bền",
-            "c-Tăng độ bóng",
-            "d-Tăng độ bền mỏi",
-          ],
-          a: 3, // d
-          e: "Lăn ép tạo độ bóng cao và ứng suất dư nén, chuyên dùng để tăng bền mỏi cho trục.",
-        },
-        {
-          q: "36-Khi chọn vật liệu và chế độ nhiệt luyện cho dụng cụ cắt gọt, hai yêu cầu quan trọng nhất là:",
-          o: [
-            "a-Độ bền và độ cứng",
-            "b-Độ cứng và độ dai va đập",
-            "c-Độ bền và độ dai va đập",
-            "d-Độ dai va đập và khả năng chịu mài mòn",
-          ],
-          a: 3, // b
-          e: "Cần Độ cứng (để cắt) và Độ dai (để không bị mẻ/gãy khi va đập).",
-        },
-        {
-          q: "37-Trong các loại thép, nguyên tố thường gây ảnh hưởng mạnh nhất đến cơ tính và quyết định công dụng của thép là:",
-          o: ["a-Crôm", "b-Niken", "c-Cacbon", "d-Vônfram"],
-          a: 2, // c
-          e: "Cacbon quyết định chính: C thấp (dẻo, xây dựng), C trung bình (bền, chi tiết máy), C cao (cứng, dụng cụ).",
-        },
-        {
-          q: "38-So với kim loại hạt lớn, kim loại hạt nhỏ có:",
-          o: [
-            "a-Độ bền cao hơn, song độ dẻo, độ dai thấp hơn",
-            "b-Độ bền, độ dẻo, độ dai đều cao hơn",
-            "c-Độ bền, độ dẻo, độ dai đều thấp hơn",
-            "d-Độ bền thấp hơn, song độ dẻo, độ dai cao hơn",
-          ],
-          a: 1, // b
-          e: "Nhỏ hạt là phương pháp duy nhất nâng cao đồng thời cả độ bền và độ dẻo dai.",
-        },
-        {
-          q: "39-Trong số các chỉ tiêu cơ tính, kích thước hạt ảnh hưởng mạnh nhất đến:",
-          o: [
-            "a-Độ cứng",
-            "b-Giới hạn bền",
-            "c-Độ giãn dài",
-            "d-Độ dai va đập",
-          ],
-          a: 1, // d
-          e: "Hạt nhỏ làm giảm nhiệt độ chuyển biến dẻo-giòn, tăng mạnh độ dai va đập.",
-        },
-        {
-          q: "40-Hiểu thế nào là vật liệu có cơ tính tổng hợp (độ bền kết cấu) cao?",
-          o: [
-            "a-Độ cứng cao, độ bền cao, độ dẻo cao",
-            "b-Độ bền cao, độ dẻo cao",
-            "c-Chống biến dạng dẻo tốt và chống phá hủy tốt",
-            "d-Chống biến dạng đàn hồi và độ dẻo tốt",
-          ],
-          a: 2, // c
-          e: "Cơ tính tổng hợp là sự kết hợp giữa độ bền (chống biến dạng) và độ dai (chống gãy).",
-        },
-        {
-          q: "41-Tương quan giữa độ bền lý thuyết của vật liệu tinh thể so với độ bền thực tế là:",
-          o: [
-            "a-Cao hơn hàng chục lần",
-            "b-Cao hơn hàng trăm lần",
-            "c-Thấp hơn hàng chục lần",
-            "d-Thấp hơn hàng trăm lần",
-          ],
-          a: 1, // b
-          e: "Do mạng tinh thể thực tế có khuyết tật (lệch), độ bền thực tế thấp hơn lý thuyết 100-1000 lần.",
-        },
-        {
-          q: "42-Yếu tố hóa bền chủ yếu trong thép hạt nhỏ là:",
-          o: [
-            "a-Mật độ lệch cao",
-            "b-Kích thước hạt nhỏ",
-            "c-Tiết pha phân tán",
-            "d-Dung dịch rắn",
-          ],
-          a: 1, // b
-          e: "Biên giới hạt ngăn cản chuyển động của lệch (Hệ thức Hall-Petch).",
-        },
-        {
-          q: "43-Yếu tố hóa bền chủ yếu trong hợp kim nhôm độ bền cao là:",
-          o: [
-            "a-Dung dịch rắn",
-            "b-Kích thước hạt nhỏ",
-            "c-Tiết pha phân tán",
-            "d-Mật độ lệch cao",
-          ],
-          a: 2, // c
-          e: "Cơ chế hóa bền quan trọng nhất của hợp kim nhôm (Duralumin) là hóa bền tiết pha (già hóa).",
-        },
-        {
-          q: "44-Ba phương pháp thử độ cứng thông dụng là Rockwell, Brinell, Vickers. Ký hiệu là:",
-          o: ["a-RC BR VC", "b-HR BR VC", "c-HR HB HV", "d-HRC HB HV"],
-          a: 3, // d
-          e: "Rockwell (HRC/HRB), Brinell (HB), Vickers (HV).",
-        },
-        {
-          q: "45-Độ cứng Rockwell thang C (HRC) sử dụng mũi đo là:",
-          o: [
-            "a-Hình nón kim cương",
-            "b-Hình chóp kim cương hoặc hợp kim cứng",
-            "c-Hình nón kim cương hoặc hợp kim cứng",
-            "d-Viên bi thép tôi",
-          ],
-          a: 0, // a
-          e: "HRC dùng mũi nón kim cương góc đỉnh 120 độ.",
-        },
-        {
-          q: "46-Chọn phương pháp đo phù hợp nhất cho 1 mẫu đồng dày 3mm:",
-          o: ["a-HRB", "b-HB", "c-HV", "d-HRC"],
-          a: 0, // a
-          e: "Đồng là kim loại mềm/trung bình -> Dùng Rockwell B (HRB) hoặc Brinell, nhưng HRB đo nhanh và tiện hơn cho tấm mỏng.",
-        },
-        {
-          q: "47-Kết tinh lại trong vật liệu tinh thể đã qua biến dạng dẻo là gì?",
-          o: [
-            "a-Là quá trình sinh và phát triển các hạt tinh thể mới ít khuyết tật",
-            "b-Là quá trình chuyển sang cấu trúc kim lọai mới",
-            "c-Là một dạng chuyển pha ở trạng thái rắn",
-            "d-Là sự tiết ra pha tinh thể từ tổ chức nền",
-          ],
-          a: 0, // a
-          e: "Kết tinh lại khử bỏ ứng suất, tạo hạt mới đẳng trục.",
-        },
-        {
-          q: "48-Nhiệt độ kết tinh lại (TKTL) của kim loại sạch xác định gần đúng theo Tnc:",
-          o: [
-            "a-0,1-0,2 Tnc",
-            "b-0,3-0,4 Tnc",
-            "c-0,5-0,6 Tnc",
-            "d-0,7-0,8 Tnc",
-          ],
-          a: 1, // b
-          e: "Quy tắc Bochvar: TKTL ≈ 0.4 Tnc.",
-        },
-        {
-          q: "49-Cán, kéo, dập ở nhiệt độ trong phòng là biến dạng nóng đối với vật liệu:",
-          o: ["a-Nhôm", "b-Đồng", "c-Chì (Tnc=327°C)", "d-Sắt"],
-          a: 2, // c
-          e: "Chì có Tnc thấp (~600K), nên TKTL ≈ 240K (-33°C). Nhiệt độ phòng (25°C) > TKTL của Chì -> Biến dạng nóng.",
-        },
-        {
-          q: "50-Thép tấm sau khi cán nguội + ủ có khả năng chống ăn mòn tốt hơn hay xấu hơn so với trường hợp không ủ?",
-          o: ["a-Giống nhau", "b-Tốt hơn", "c-Xấu hơn", "d-Xấu hơn đáng kể"],
-          a: 1, // b
-          e: "Thép không ủ chứa năng lượng cao (ứng suất, lệch) nên dễ bị ăn mòn. Ủ làm giảm năng lượng -> Chống ăn mòn tốt hơn.",
-        },
-        {
-          q: "51-Cơ tính của kim loại sau kết tinh lại thay đổi như thế nào?",
-          o: [
-            "a-Độ cứng tăng, độ bền tăng, độ dẻo giảm",
-            "b-Độ cứng tăng, độ bền giảm, độ dẻo tăng",
-            "c-Độ cứng giảm, độ bền giảm, độ dẻo tăng",
-            "d-Độ cứng tăng, độ bền tăng, độ dẻo tăng",
-          ],
-          a: 2, // c
-          e: "Kết tinh lại làm vật liệu 'mềm' đi: Giảm bền/cứng, tăng dẻo/dai.",
-        },
-        {
-          q: "52-Thế nào là biến dạng nóng?",
-          o: [
-            "a-Là biến dạng ở nhiệt độ cao",
-            "b-Là biến dạng dẻo ở nhiệt độ cao",
-            "c-Là biến dạng dẻo ở nhiệt độ thấp hơn TKTL",
-            "d-Là biến dạng dẻo ở nhiệt độ cao hơn TKTL",
-          ],
-          a: 3,
-          e: "Biến dạng nóng xảy ra trên nhiệt độ kết tinh lại (không gây hóa bền).",
-        },
-        {
-          q: "8-Hình vẽ bên (hình a )là ô cơ sở của mạng ?",
-          img: "hinha.png",
-          o: [
-            "Lập phương tâm khối",
-            "Lập phương tâm mặt",
-            "Chính phương tâm khối ",
-            "Sáu phương xếp chặt",
-          ],
-          a: 0,
-        },
-        {
-          q: "9- Hình vẽ bên (hình b )là ô cơ sở của mạng ?",
-          img: "hinhb.png",
-          o: [
-            "Lập phương tâm khối",
-            "Lập phương tâm mặt",
-            "Chính phương tâm khối ",
-            "Sáu phương xếp chặt",
-          ],
-          a: 1,
-        },
-        {
-          q: "10- Hình vẽ bên (hình c )là ô cơ sở của mạng ?",
-          img: "hinhc.png",
-          o: [
-            "Lập phương tâm khối",
-            "Lập phương tâm mặt",
-            "Chính phương tâm khối ",
-            "Sáu phương xếp chặt",
-          ],
-          a: 2,
-        },
-        {
-          q: "11-Hình vẽ bên (hình d ) là ô cơ sở của mạng ?",
-          img: "hinhd.png",
-          o: [
-            "Lập phương tâm khối",
-            "Lập phương tâm mặt",
-            "Chính phương tâm khối ",
-            "Sáu phương xếp chặt",
-          ],
-          a: 3,
-        },
-        {
-          q: "12-Trong bốn hình vẽ a,b c,d ở dưới, Fe ở nhiệt độ thường có kiểu mạng nào?",
-          img: "cau12.png",
-          o: ["hinh a", "hinh b ", "hinh c", "hinh d"],
-          a: 0,
-        },
-        {
-          q: "",
-          img: "cau13.png",
-          o: ["hinh a", "hinh b ", "hinh c", "hinh d"],
-          a: 0,
-        },
-        {
-          q: "",
-          img: "cau14.png",
-          o: ["hinh a", "hinh b ", "hinh c", "hinh d"],
-          a: 1,
-        },
-        {
-          q: "",
-          img: "cau15.png",
-          o: ["hinh a", "hinh b ", "hinh c", "hinh d"],
-          a: 1,
-        },
-        {
-          q: "",
-          img: "cau16.png",
-          o: ["hinh a", "hinh b ", "hinh c", "hinh d"],
-          a: 0,
-        },
-        {
-          q: "",
-          img: "cau17.png",
-          o: ["hinh a", "hinh b ", "hinh c", "hinh d"],
-          a: 0,
-        },
-        {
-          q: "",
-          img: "cau18.png",
-          o: ["hinh a", "hinh b ", "hinh c", "hinh d"],
-          a: 0,
-        },
-        {
-          q: "",
-          img: "cau19.png",
-          o: ["hinh a", "hinh b ", "hinh c", "hinh d"],
-          a: 1,
-        },
-        {
-          q: "",
-          img: "cau20.png",
-          o: ["hinh a", "hinh b ", "hinh c", "hinh d"],
-          a: 0,
-        },
-        {
-          q: "",
-          img: "cau21.png",
-          o: ["hinh a", "hinh b ", "hinh c", "hinh d"],
-          a: 3,
-        },
-        {
-          q: "22-Trạng thái tinh thể trên hình H01-1 là:",
-          img: "cau22.png",
-          o: [
-            "a-Tinh thể thực tế có chứa lệch biên",
-            "b-Tinh thể thực tế có chứa lệch",
-            "c-Tinh thể lý tưởng có chứa nửa mặt nguyên tử",
-            "d-Tinh thể lý tưởng có chứa lệch biên",
-          ],
-          a: 3,
-        },
-        {
-          q: "23- Trạng thái tinh thể trên hình H01-2 là:",
-          img: "cau23.png",
-          o: [
-            "a-Tinh thể thực tế có chứa lệch",
-            "b-Tinh thể thực tế có chứa lệch xoắn",
-            "c-Tinh thể lý tưởng có chứa bậc cấp",
-            "d-Tinh thể lý tưởng có chứa lệch xoắn",
-          ],
-          a: 3,
-        },
-        {
-          q: "24- Trạng thái tinh thể trên hình H01-3 là:",
-          img: "cau24.png",
-          o: [
-            "a-Mô hình tinh thể có chứa sai lệch",
-            "b-Mô hình mạng tinh thể có chứa lỗ hổng",
-            "c-Mô hình mạng tinh thể 2 chiều có chứa nút trống",
-            "d-Mô hình mạng tinh thể 2 chiều có chứa lệch",
-          ],
-          a: 2,
-        },
-        {
-          q: "25- Trạng thái tinh thể trên hình H01-4 là:",
-          img: "cau25.png",
-          o: [
-            "a-Mạng tinh thể chứa các nguyên tử A và B",
-            "b-Mạng 2 chiều có chứa sai lệch điểm dạng nguyên tử lạ thay thế và nguyên tử xen kẽ",
-            "c-Mạng lý tưởng 2 chiều có chứa nguyên tử A và B",
-            "d-Mạng 2 chiều chứa nút trống A và nguyên tử B",
-          ],
-          a: 1,
-        },
-        {
-          q: "10-Có mô hình mạng tinh thể 2 chiều vẽ trên hình H02-1 và hình H02-2 là biểu diễn cấu trúc của:",
-          img: "cau10chuong3.png",
-          o: [
-            "a-Dung dịch rắn thay thế (H02-1) và d.d. rắn có tạp chất (H02-2)",
-            "b-Hợp kim A -B (H02-1) và nguyên tố A chứa tạp chất B (H02-2) ",
-            "c-Dung dịch rắn xen kẽ (H02-1) và dung dịch rắn thay thế (H02-2)",
-            "d-Dung dịch rắn thay thế (H02-1) và dung dịch rắn xen kẽ(H02-2)",
-          ],
-          a: 2,
-        },
-        {
-          q: "24- Cho giản đồ trạng thái Fe-C trên hình H02-9. Tổ chức của hợp kim có 0,2%C ở nhiệt độ trong phòng là:",
-          img: "H02-9.png",
-          o: [
-            "a-50%F+ 50%P",
-            "b-90%F+ 10%P",
-            "c-100%F",
-            "d-80%F+ 20%P aibtlm , gửi da vô nhóm love",
-          ],
-          a: 3, // Đáp án D
-        },
-        {
-          q: "25- Cho giản đồ trạng thái Fe-C trên hình H02-9. Tổ chức của hợp kim có 1,2%C ở nhiệt độ trong phòng là:",
-          img: "H02-9.png",
-          o: ["a-F+ P", "b-100%P", "c-100%F", "d-P+XeII"],
-          a: 3, // Đáp án D
-        },
-        {
-          q: "26- Cho giản đồ trạng thái Fe-C trên hình H02-9. Tổ chức của hợp kim có 0,8%C ở nhiệt độ trong phòng là:",
-          img: "H02-9.png",
-          o: ["a-50%F+ 50%P", "b-90%F+ 10%P", "c-100%F", "d-100%P"],
-          a: 3, // Đáp án D
-        },
-        {
-          q: "33-Độ bền mỏi lâu là:",
-          img: "",
-          o: [
-            "a-Ứng suất trung bình của chu kỳ mà vật liệu chưa bị phá hủy",
-            "b-Ứng suất mà vật liệu chịu được khi tải trọng theo chu kỳ",
-            "c-Biên độ tối đa của ứng suất chu kỳ mà vật liệu chịu được với số chu kỳ bất kỳ",
-            "d-Ứng suất tối đa mà vật liệu chịu được khi tải trọng thay đổi chu kỳ",
-          ],
-          a: 1,
-        },
-        {
-          q: "53-Hình 10 là tổ chức của:",
-          img: "cau53.png",
-          o: [
-            "a-Thép trước cùng tích",
-            "b-Thép pec lit hạt",
-            "c-Gang cầu",
-            "d-Gang xám",
-          ],
-          a: 2, // c-Gang cầu
-        },
-        {
-          q: "54-Hình 11 là tổ chức của:",
-          img: "cau54.png",
-          o: ["a-Thép cùng tích", "b-Gang dẻo", "c-Gang cầu", "d-Gang xám"],
-          a: 1, // b-Gang dẻo
-        },
-        {
-          q: "55-Hình 12 là tổ chức của:",
-          img: "cau55.png",
-          o: ["a-Gang cùng tinh", "b-Gang dẻo", "c-Gang cầu", "d-Gang xám"],
-          a: 0, // a-Gang cùng tinh
-        },
-        {
-          q: "56-Hình 13 là tổ chức của:",
-          img: "cau56.png",
-          o: ["a-Thép cùng tích", "b-Gang dẻo", "c-Gang cầu", "d-Gang xám"],
-          a: 3, // d-Gang xám
-        },
-        {
-          q: "57-Hình 14 là tổ chức của:",
-          img: "cau57.png",
-          o: [
-            "a-Gang sau cùng tinh",
-            "b-Gang trước cùng tinh",
-            "c-Gang cầu",
-            "d-Gang xám",
-          ],
-          a: 0, // a-Gang sau cùng tinh
-        },
-        {
-          q: "58-Hình 15 là tổ chức của:",
-          img: "cau58.png",
-          o: [
-            "a-Gang sau cùng tinh",
-            "b-Gang trước cùnh tinh",
-            "c-Gang cầu",
-            "d-Gang xám",
-          ],
-          a: 1, // b-Gang trước cùnh tinh
-        },
-        {
-          q: "59-Hình 16 là tổ chức của:",
-          img: "cau59.png",
-          o: [
-            "a-Gang sau cùng tinh",
-            "b-Gang trước cùnh tinh",
-            "c-Thép trước cùng tích",
-            "d- Thép sau cùng tích",
-          ],
-          a: 2, // c-Thép trước cùng tích
-        },
-        {
-          q: "60- Hình 17 là tổ chức:",
-          img: "cau60.png",
-          o: ["a-peclit", "b-mactenxit", "c-lêđêburit", "d-ferit"],
-          a: 1, // b-mactenxit
-        },
-        {
-          q: "61- Hình 18 là tổ chức:",
-          img: "cau61.png", // Đây là file ảnh bạn vừa gửi
-          o: ["a-peclit", "b-mactenxit", "c-lêđêburit", "d-ferit"],
-          a: 0, // a-peclit (Nhìn hình là dạng tấm song song)
-        },
-        {
-          q: "62- Hình 19 là tổ chức:",
-          img: "cau62.png",
-          o: ["a-peclit hat", "b-xóocbit", "c-lêđêburit", "d-ferit"],
-          a: 0, // a-peclit hat
-        },
-        {
-          q: "63-Hình 20 là tổ chức của:",
-          img: "cau63.png",
-          o: [
-            "a-Gang sau cùng tinh",
-            "b-Gang trước cùnh tinh",
-            "c-Thép trước cùng tích",
-            "d- Thép sau cùng tích",
-          ],
-          a: 3, // d- Thép sau cùng tích
-        },
-        {
-          q: "11-Đường cong biến dạng đặc trưng của vật liệu khi thử kéo nêu trên hình H04-2. Giai đoạn nào trên đường cong vật liệu được hóa bền biến dạng mạnh nhất?",
-          img: "hinhad.png",
-          o: ["a-OA", "b-AB", "c-BC", "d-CD"],
-          a: 1, // Đáp án B
-        },
-        {
-          q: "14-Hình H04-3 nêu 4 xu thế thay đổi tính chất của vật liệu kim loại (hoặc polyme tinh thể). Cho biết độ bền thay đổi theo xu hướng nào?",
-          img: "hinhab.png",
-          o: ["a-(1)", "b-(2)", "c-(3)", "d-(4)"],
-          a: 3, // Đáp án D
-        },
-        {
-          q: "15-Hình H04-3 nêu 4 xu thế thay đổi tính chất của vật liệu kim loại (hoặc polyme tinh thể). Cho biết độ dẻo thay đổi theo xu hướng nào?",
-          img: "hinhab.png",
-          o: ["a-(1)", "b-(2)", "c-(3)", "d-(4)"],
-          a: 2, // Đáp án C
-        },
-
-        {
-          q: "161- Khi ram thép đã tôi, xảy ra các chuyển biến pha sau:",
-          o: [
-            "a-Sự phân hủy mactenxit tôi",
-            "b-Auxtenit dư chuyển thành mactenxit",
-            "c-Tạo cacbit từ mactenxit tôi và phân hủy auxtenit dư",
-            "d-Sự tạo thành xêmentit",
-          ],
-          a: 2, // c (Ram là quá trình phân hủy Mactenxit tôi và Auxtenit dư)
-        },
-
-        {
-          q: "163- Nói một cách tổng quát thì tổ chức nhận được sau khi tôi các hợp kim (thép, hợp kim màu..) là:",
-          o: [
-            "a-mactenxit + austenit dư",
-            "b-mactenxit",
-            "c-tổ chức của pha không cân bằng",
-            "d-tổ chức của pha ở nhiệt độ cao",
-          ],
-          a: 2, // c (Tôi là tạo ra trạng thái không cân bằng)
-        },
-        {
-          q: "164-Biểu đồ động học chuyển pha khi nguội đẳng nhiệt có dạng:",
-          o: ["a-Hình chữ C", "b-Hình chữ S", "c-Hình chữ X", "d-Hình chữ T"],
-          a: 0, // a (Biểu đồ TTT thường gọi là chữ C)
-        },
-        {
-          q: "165-Khi nguội chậm thì Auxtenit trong thép cacbon chuyển thành:",
-          o: ["a-Peclit", "b-Bainit", "c-Macten xit", "d-Mactenxit ram"],
-          a: 0, // a
-        },
-        {
-          q: "166-Tổ chức tế vi của Peclit tấm là gồm:",
-          o: [
-            "a-Các tấm peclit song song nhau",
-            "b-Các tấm ferit và xêmentit xen kẽ nhau",
-            "c-Các tấm ferit và các hạt xêmentit",
-            "d-Các tấm xêmentit và các hạt ferit",
-          ],
-          a: 1, // b
-        },
-        {
-          q: "167-Đặc điểm của chuyển biến auxtenit - peclit trong thép sau cùng tích là:",
-          o: [
-            "a-Tạo trước xêmentit",
-            "b-Tạo trước ferit",
-            "c-Tạo thành xêmentit",
-            "d-Tạo thành ferit",
-          ],
-          a: 0, // a (Thép sau cùng tích tạo xe II trước)
-        },
-        {
-          q: "168-Đối với hợp kim sắt - cacbon, mactenxit là:",
-          o: [
-            "a-Dung dịch rắn quá bão hòa của C trong Feγ",
-            "b-Dung dịch rắn bão hòa của C trong Feγ",
-            "c-Dung dịch rắn quá bão hòa của C trong Feα",
-            "d-Dung dịch rắn bão hòa của C trong Feα",
-          ],
-          a: 2, // c
-        },
-        {
-          q: "169-Mạng tinh thể của mactenxit là:",
-          o: [
-            "a-Lập phương tâm mặt",
-            "b-Chính phương tâm mặt",
-            "c-Lập phương tâm khối",
-            "d-Chính phương tâm khối",
-          ],
-          a: 3, // d
-        },
-        {
-          q: "170-Vị trí tương đối của chuyển biến auxtenit-bainit so với chuyển biến auxtenit - peclit và auxtenit - mactenxit:",
-          o: [
-            "a-Giống chuyển biến auxtenit - peclit",
-            "b-Giống chuyển biến auxtenit – mactenxit",
-            "c-Trung gian giữa chuyển biến auxtenit - peclit và auxtenit - mactenxit",
-            "d-Không có đặc điểm chung so với 2 chuyển biến trên",
-          ],
-          a: 2, // c
-        },
-        // Bỏ qua câu 171, 172, 173, 174, 175 (Liên quan hình H03-26, H03-27)
-        {
-          q: "177-Ủ là phương pháp nhiệt luyện:",
-          o: [
-            "a-Làm ổn định tổ chức",
-            "b-Làm nguội chậm để đạt tổ chức cân bằng",
-            "c-Khử bỏ ứng suất bên trong",
-            "d-Làm nhỏ hạt",
-          ],
-          a: 1, // b (Định nghĩa chính xác nhất về ủ)
-        },
-        {
-          q: "178-Đặc trưng của công nghệ ủ là:",
-          o: [
-            "a-Làm nguội chậm cùng lò",
-            "b-Đạt được tổ chức cân bằng với độ cứng thấp nhất",
-            "c-Giữ nhiệt lâu",
-            "d-Nhiệt độ nung cao",
-          ],
-          a: 0, // a
-        },
-        {
-          q: "180-Để dễ gia công cắt thép mác C20 phải qua nhiệt luyện:",
-          o: [
-            "a-Ủ hoàn toàn",
-            "b-Thường hóa",
-            "c-Ủ không hoàn toàn",
-            "d-Tôi + ram cao",
-          ],
-          a: 1, // b (Thép C thấp thì thường hóa để tăng độ cứng lên một chút cho dễ cắt)
-        },
-        {
-          q: "181- Để dễ gia công cắt thép mác C40 phải qua nhiệt luyện:",
-          o: [
-            "a-Ủ hoàn toàn",
-            "b-Thường hóa",
-            "c-Ủ không hoàn toàn",
-            "d-Tôi + ram cao",
-          ],
-          a: 0, // a (Thép C trung bình thì ủ hoàn toàn)
-        },
-        {
-          q: "182-Để dễ gia công cắt thép mác CD120 phải qua nhiệt luyện:",
-          o: [
-            "a-Ủ hoàn toàn",
-            "b-Thường hóa",
-            "c-Ủ cầu hóa (Ủ không hoàn toàn)",
-            "d-Tôi + ram cao",
-          ],
-          a: 2, // c (Thép dụng cụ CD120 cần ủ cầu hóa để giảm độ cứng)
-        },
-        {
-          q: "183- Sau khi bị biến dạng dẻo, thép được nung nóng tới 200-300°C sẽ có tác dụng:",
-          o: [
-            "a-Chỉ là để giảm ứng suất bên trong",
-            "b-Làm mất hoàn toàn ứng suất bên trong",
-            "c-Làm giảm độ cứng",
-            "d-Khôi phục hoàn toàn tính dẻo",
-          ],
-          a: 0, // a
-        },
-        {
-          q: "184-Nhiệt độ nung và điều kiện làm nguội khi ủ hoàn toàn cho thép trước cùng tích là:",
-          o: [
-            "a-Nung cao hơn Ac3, nguội cùng lò",
-            "b-Nung cao hơn Ac3, nguội ngòai không khí",
-            "c-Nung cao hơn Ac1, nguội cùng lò",
-            "d-Nung cao hơn Ac1, nguội ngòai không khí",
-          ],
-          a: 0, // a
-        },
-        {
-          q: "185-Ủ cầu hóa trong thép nhằm mục đích gì?",
-          o: [
-            "a-Tạo graphit cầu trong thép",
-            "b-Tạo tổ chức peclit hạt trong thép dụng cụ cacbon",
-            "c-Tạo tổ chức peclit hạt trong thép trước cùng tích",
-            "d-Tạo xêmentit cầu trong thép",
-          ],
-          a: 1, // b (Tạo peclit hạt để dễ gia công cắt gọt cho thép dụng cụ)
-        },
-        {
-          q: "186-Nhiệt độ nung và điều kiện làm nguội khi thường hóa thép cacbon là:",
-          o: [
-            "a-Nung cao hơn Ac1, nguội ngòai không khí",
-            "b-Nung cao hơn Ac3 hoặc Acm, nguội ngòai không khí",
-            "c-Nung cao hơn Ac3 hoặc Acm, nguội cùng lò",
-            "d-Nung thấp hơn Ac3 hoặc Acm, nguội cùng lò",
-          ],
-          a: 1, // b
-        },
-        {
-          q: "187-Đặc trưng của công nghệ tôi thép là: sau khi nung thép tới trạng thái auxtenit làm nguội:",
-          o: [
-            "a-thật nhanh, càng nhanh càng tốt",
-            "b-trong nước",
-            "c-trong dầu",
-            "d-nhanh thích hợp tùy loại thép (lớn hơn V tới hạn)",
-          ],
-          a: 3, // d
-        },
-        {
-          q: "189-Nhiệt độ tôi cho mác thép CD100 là:",
-          o: ["a-680°C", "b-780°C", "c-880°C", "d-980°C"],
-          a: 1, // b (Thép sau cùng tích tôi ở Ac1 + 30-50 độ, khoảng 760-780)
-        },
-        {
-          q: "190-Nhiệt độ tôi cho mác thép C40 là:",
-          o: ["a-640°C", "b-740°C", "c-840°C", "d-940°C"],
-          a: 2, // c (Thép trước cùng tích tôi ở Ac3 + 30-50 độ)
-        },
-        {
-          q: "191-Môi trường tôi thích hợp cho thép cacbon là:",
-          o: ["a-Nước", "b-Nước lạnh", "c-Dầu nguội", "d-Dầu nóng"],
-          a: 0, // a
-        },
-        {
-          q: "192-Môi trường tôi thích hợp cho thép hợp kim là:",
-          o: [
-            "a-Muối nóng chảy",
-            "b-Nước nguội",
-            "c-Dầu nóng/Dầu",
-            "d-Không khí",
-          ],
-          a: 2, // c (Thép hợp kim có độ thấm tôi cao nên tôi trong dầu để giảm ứng suất)
-        },
-        {
-          q: "193-Tôi là phương pháp nhiệt luyện đạt được độ cứng và tính chống mài mòn cao cho:",
-          o: [
-            "a-Mọi thép kết cấu không phụ thuộc vào lượng cacbon",
-            "b-Mọi thép kết cấu không phụ thuộc vào lượng cacbon và nguyên tố hợp kim",
-            "c-Mọi thép dụng cụ",
-            "d-Mọi thép không gỉ",
-          ],
-          a: 2, // c
-        },
-        {
-          q: "195-Các chi tiết qua thấm cacbon, dao cắt, khuôn dập nguội được nhiệt luyện kết thúc bằng:",
-          o: [
-            "a-Tôi + ram thấp",
-            "b-Tôi + ram trung bình",
-            "c-Tôi + ram cao",
-            "d-Tôi bề mặt",
-          ],
-          a: 0, // a (Cần độ cứng cao nhất)
-        },
-        {
-          q: "196-Các chi tiết cần tính đàn hồi cao được nhiệt luyện kết thúc bằng:",
-          o: [
-            "a-Tôi + ram thấp",
-            "b-Tôi + ram trung bình",
-            "c-Tôi + ram cao",
-            "d-Tôi bề mặt",
-          ],
-          a: 1, // b (Lò xo, nhíp cần ram trung bình)
-        },
-        {
-          q: "198-Tính (độ) thấm tôi là khả năng:",
-          o: [
-            "a-Đạt độ cứng cao khi tôi",
-            "b-Đạt được lớp mactenxit dày khi tôi (chiều sâu lớp tôi)",
-            "c-Dễ đạt được tổ chức mactenxit khi tôi",
-            "d-Dễ thấm cácbon",
-          ],
-          a: 1, // b
-        },
-        {
-          q: "199-Thép có độ thấm tôi cao là thép:",
-          o: [
-            "a-Dễ đạt độ cứng cao khi tôi",
-            "b-Dễ đạt độ cứng cao, đồng đều trên tiết diện lớn",
-            "c-Khi tôi không cần làm nguội nhanh cũng đạt độ cứng cao",
-            "d-Dễ thấm cácbon",
-          ],
-          a: 2, // c (Hoặc b cũng đúng ý nghĩa, nhưng c giải thích bản chất V tới hạn nhỏ)
-        },
-        {
-          q: "201-Tính (độ) thấm tôi của thép phụ thuộc chủ yếu vào:",
-          o: [
-            "a-Thành phần cacbon",
-            "b-Thành phần hợp kim",
-            "c-Độ sạch tạp chất (P,S)",
-            "d-Mức độ triệt để khử ôxy",
-          ],
-          a: 1, // b
-        },
-        {
-          q: "202-Đưa vào thép kết cấu một lượng hợp kim không quá 3-4% thường nhằm mục đích là:",
-          o: [
-            "a-Nâng cao độ thấm tôi",
-            "b-Nâng cao độ cứng và tính chống mài mòn",
-            "c-Nâng cao khả năng chịu nhiệt",
-            "d-Làm cho hạt nhỏ",
-          ],
-          a: 0, // a
-        },
-        {
-          q: "203-Để tăng độ thấm tôi người ta thường áp dụng biện pháp:",
-          o: [
-            "a-Nâng cao lượng các nguyên tố hợp kim trong thép",
-            "b-Làm nguội nhanh khi tôi",
-            "c-Làm nhỏ hạt thép",
-            "d-Nhiệt luyện trong lò chân không",
-          ],
-          a: 0, // a
-        },
-        {
-          q: "204-Yếu tố quan trọng nhất để làm giảm tốc độ tôi tới hạn do đó làm tăng độ thấm tôi là:",
-          o: [
-            "a-Thành phần hợp kim của thép",
-            "b-Thành phần hợp kim của auxtenit trước khi tôi (trạng thái hoà tan)",
-            "c-Hat auxtenit nhỏ mịn",
-            "d-Tôi trong lò chân không",
-          ],
-          a: 1, // b
-        },
-        {
-          q: "207- Nung thép đến 700°C rồi làm nguội trong nước, thép sẽ:",
-          o: [
-            "a-Cứng lên",
-            "b-Mềm đi",
-            "c-Giữ nguyên độ cứng",
-            "d-Tùy trường hợp độ cứng có thể giữ nguyên hay mềm đi",
-          ],
-          a: 2, // c (700 độ chưa đạt đến nhiệt độ tới hạn Ac1=727, nên không có chuyển biến pha -> không tôi được)
-        },
-        {
-          q: "209-Nhiệt độ nung và điều kiện làm nguội khi tôi thép là:",
-          o: [
-            "a-Nung cao hơn nhiệt độ tới hạn, nguội nhanh hơn tốc độ tới hạn",
-            "b-Nung cao hơn nhiệt độ tới hạn, nguội rất nhanh",
-            "c-Nung đến nhiệt độ tới hạn, nguội với tốc độ tới hạn",
-            "d-Nung đến nhiệt độ tới hạn, nguội rất nhanh",
-          ],
-          a: 0, // a
-        },
-        {
-          q: "211-Đối với thép kết cấu có cacbon trung bình (C=0.3-0.5), sự kết hợp tốt nhất giữa giới hạn chảy và độ dai va đập cao đạt được bằng:",
-          o: [
-            "a-Tôi + ram thấp",
-            "b-Tôi + ram trung bình",
-            "c-Tôi + ram cao",
-            "d-Tôi bề mặt",
-          ],
-          a: 2, // c (Nhiệt luyện hóa tốt: Tôi + Ram cao)
-        },
-        {
-          q: "216-Khi ram thép, quy luật thay đổi cơ bản cơ tính theo nhiệt độ như sau:",
-          o: [
-            "a-Độ cứng giảm, độ bền tăng, độ dẻo tăng",
-            "b-Độ cứng tăng, độ bền tăng, độ dẻo giảm",
-            "c-Độ cứng giảm, độ bền giảm, độ dẻo tăng",
-            "d-Độ cứng tăng, độ bền giảm, độ dẻo tăng",
-          ],
-          a: 2, // c
-        },
-        {
-          q: "220-Thấm cacbon là phương pháp có hiệu quả để nâng cao khả năng làm việc của:",
-          o: ["a-Bánh răng", "b-Nhíp, lò xo", "c-Ổ lăn", "d-Dao cắt"],
-          a: 0, // a (Bánh răng cần bề mặt cứng, lõi dẻo)
-        },
-        {
-          q: "235- Phương pháp thấm cacbon phổ biến nhất trên thế giới hiện nay là:",
-          o: ["a-Thể rắn", "b-Thể lỏng", "c-Thể khí", "d-Thể hơi"],
-          a: 2, // c (Gas carburizing)
-        },
-        {
-          q: "238-Thép lá để dập nguội (dập sâu) phải là loại thép:",
-          o: [
-            "a-Sôi, cácbon thấp, không hợp kim hóa",
-            "b-Lặng, cácbon thấp, không hợp kim hóa",
-            "c-Nửa lặng, cacbon thấp, không hợp kim hóa",
-            "d-Lặng, cacbon thấp, hợp kim hóa",
-          ],
-          a: 0, // a (Thép sôi dẻo nhất, rẻ nhất để dập nguội các chi tiết đơn giản, tuy nhiên thép lặng chất lượng cao hơn. Nhưng thường dùng thép C thấp <0.1%)
-        },
-        {
-          q: "248- Vì sao các nguyên tố hợp kim có tác dụng tăng độ thấm tôi của thép:",
-          o: [
-            "a-Do dịch chuyển đường cong chữ C sang trái, tốc độ tôi tới hạn tăng",
-            "b-Do dịch chuyển đường cong chữ C xuống dưới, tốc độ tôi tới hạn giảm",
-            "c-Do dịch chuyển đường cong chữ C sang phải, tốc độ tôi tới hạn giảm",
-            "d-Do dịch chuyển đường cong chữ C lên trên, tốc độ tôi tới hạn giảm",
-          ],
-          a: 2, // c
-        },
+      /**
+       * SPACED REPETITION ENGINE (OPTIMIZED)
+       * Logic: Modified SuperMemo-2
+       */
+      const RAW_DATA = [
+        { w: "maritime", m: "thuộc về hàng hải" },
+        { w: "lookout", m: "người canh gác, đài quan sát" },
+        { w: "mast", m: "cột buồm" },
+        { w: "eerie", m: "kỳ quái, rợn người" },
+        { w: "helm", m: "bánh lái tàu" },
+        { w: "rivet", m: "đinh tán (dùng để ghép vỏ tàu)" },
+        { w: "hull", m: "thân tàu" },
+        { w: "watertight compartment", m: "khoang kín nước" },
+        { w: "bow", m: "mũi tàu (phần đầu)" },
+        { w: "stern", m: "đuôi tàu (phần sau)" },
+        { w: "propeller", m: "chân vịt" },
+        { w: "frigid", m: "lạnh giá, lạnh buốt" },
+        { w: "catastrophe", m: "thảm họa tàn khốc" },
+        { w: "submerged", m: "chìm ngập dưới nước" },
+        { w: "reckless", m: "liều lĩnh, thiếu cẩn trọng" },
+        { w: "backlog", m: "lượng tồn đọng" },
+        { w: "sight", m: "trông thấy (từ xa)" },
+        { w: "steer around", m: "lái tàu tránh" },
+        { w: "burst", m: "làm nổ, làm bung ra" },
+        { w: "surge", m: "dồn tới, ùa tới" },
+        { w: "plunge", m: "lao rầm xuống" },
+        { w: "bob up", m: "nhấp nhô lên mặt nước" },
+        { w: "avert", m: "ngăn chặn, phòng ngừa" },
+        { w: "surpass", m: "vượt qua, vượt trội" },
+        { w: "abound", m: "có rất nhiều, nhan nhản" },
+        { w: "jam", m: "làm nghẽn, kẹt" },
+        { w: "unbeknownst to", m: "không hay biết" },
+        { w: "make do without", m: "xoay sở khi thiếu" },
+        { w: "set in motion", m: "khởi động" },
+        { w: "relieved of duty", m: "được miễn nhiệm vụ" },
+        { w: "visual inspection", m: "kiểm tra bằng mắt" },
+        { w: "pack ice", m: "băng trôi mảng lớn" },
+        { w: "knot", m: "hải lý" },
+        { w: "inquiry", m: "cuộc điều tra" },
       ];
-      let queue = [];
-      let currentIdx = 0;
-      let score = 0;
 
-      function shuffle(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-        return arr;
-      }
+      const CONFIG = {
+        TARGET_REPS: 4, // Số lần đúng liên tiếp để Master
+        BATCH_SIZE: 7, // Số lượng từ học cùng lúc
+        EF_BASE: 2.5, // Hệ số độ dễ cơ bản
+      };
 
-      function init() {
-        queue =shuffle([...DATA]);
-        currentIdx = 0;
-        score = 0;
-        render();
-      }
+      const app = {
+        data: [],
+        sessionStep: 0,
+        currentItem: null,
+        currentType: 0,
+        isAnswered: false,
 
-      function render() {
-        if (currentIdx >= queue.length) {
-          document.querySelector(".card").innerHTML = `
-                        <div style='text-align:center'>
-                          <h2>Hoàn thành!</h2>
-                          <p>Điểm số: ${score}/${queue.length}</p>
-                          <button class='nav-btn' onclick='location.reload()'>Làm lại từ đầu</button>
-                        </div>`;
-          return;
-        }
+        init() {
+          // Transform raw data into SRS objects
+          this.data = RAW_DATA.map((item) => ({
+            ...item,
+            ef: CONFIG.EF_BASE,
+            interval: 0,
+            due: 0, // Step count when this is due
+            reps: 0, // Consecutive correct answers
+            active: false, // Is currently in the learning batch?
+            mastered: false,
+          }));
 
-        const item = queue[currentIdx];
-        document.getElementById("qCount").innerText = `${currentIdx + 1}/${
-          queue.length
-        }`;
-        document.getElementById("score").innerText = score;
+          // Shuffle initial data to avoid order bias
+          this.data.sort(() => Math.random() - 0.5);
 
-        // --- SỬA ĐỔI QUAN TRỌNG ĐỂ HIỆN ẢNH ---
-        const qDiv = document.getElementById("qText");
-        qDiv.innerHTML = ""; // Xóa nội dung cũ
+          // Start system
+          this.fillBatch();
+          this.setupShortcuts();
+          this.updateStats();
+          this.switchTab("test");
+        },
 
-        // 1. Tạo và hiện câu hỏi (chữ)
-        const textNode = document.createElement("div");
-        textNode.innerText = item.q;
-        qDiv.appendChild(textNode);
+        /* --- CORE ALGORITHM --- */
 
-        // 2. Kiểm tra xem có ảnh không, nếu có thì tạo thẻ <img>
-        if (item.img && item.img.trim() !== "") {
-          const imgNode = document.createElement("img");
-          imgNode.src = item.img; // Đường dẫn ảnh lấy từ data
-          imgNode.style.maxWidth = "100%"; // Giới hạn chiều rộng ảnh
-          imgNode.style.display = "block"; // Xuống dòng
-          imgNode.style.margin = "15px auto"; // Căn giữa và cách lề
-          imgNode.style.borderRadius = "8px"; // Bo tròn góc cho đẹp
-          imgNode.style.border = "1px solid #ddd"; // Viền mờ
+        // 1. Fill the learning batch (Lazy Loading)
+        fillBatch() {
+          const currentActive = this.data.filter(
+            (i) => i.active && !i.mastered,
+          ).length;
+          const needed = CONFIG.BATCH_SIZE - currentActive;
 
-          // Xử lý lỗi nếu ảnh không tìm thấy
-          imgNode.onerror = function () {
-            this.style.display = "none"; // Ẩn đi nếu lỗi ảnh
-            console.log("Không tìm thấy ảnh: " + item.img);
-          };
+          if (needed > 0) {
+            let count = 0;
+            for (let item of this.data) {
+              if (!item.active && !item.mastered) {
+                item.active = true;
+                item.due = this.sessionStep; // Make it due immediately
+                count++;
+                if (count >= needed) break;
+              }
+            }
+          }
+        },
 
-          qDiv.appendChild(imgNode);
-        }
-        // ----------------------------------------
+        // 2. Pick next item (Weighted Selection)
+        pickNext() {
+          // Only look at active, non-mastered items
+          let candidates = this.data.filter((i) => i.active && !i.mastered);
 
-        document.getElementById("feedback").style.display = "none";
-        document.getElementById("nextBtn").style.display = "none";
-        document.getElementById("explain").innerHTML = "";
+          if (candidates.length === 0) return null;
 
-        const optDiv = document.getElementById("optContainer");
-        optDiv.innerHTML = "";
+          // Priority 1: Overdue items (due <= currentStep)
+          let dueItems = candidates.filter((i) => i.due <= this.sessionStep);
 
-        item.o.forEach((opt, idx) => {
+          // If nothing is technically "due", look ahead at the nearest future items
+          if (dueItems.length === 0) {
+            dueItems = candidates.sort((a, b) => a.due - b.due).slice(0, 3);
+          }
+
+          // Weighted Random: Items with lower interval (harder) have higher weight
+          // Weight = 1 / (interval + 1)
+          const totalWeight = dueItems.reduce(
+            (sum, w) => sum + 1 / (w.interval + 1),
+            0,
+          );
+          let r = Math.random() * totalWeight;
+
+          for (let item of dueItems) {
+            r -= 1 / (item.interval + 1);
+            if (r <= 0) return item;
+          }
+
+          return dueItems[0];
+        },
+
+        // 3. Update SRS Stats based on answer
+        processResult(correct) {
+          const item = this.currentItem;
+
+          if (correct) {
+            item.reps++;
+
+            // Calculate new interval (SuperMemo-2 logic adapted for steps)
+            if (item.reps === 1) item.interval = 1;
+            else if (item.reps === 2) item.interval = 3;
+            else item.interval = Math.ceil(item.interval * item.ef);
+
+            // Increase Easiness Factor
+            item.ef = item.ef + 0.1;
+
+            // Check Mastery
+            if (item.reps >= CONFIG.TARGET_REPS) {
+              item.mastered = true;
+              // Trigger refill of batch
+              this.fillBatch();
+            }
+          } else {
+            // Punishment logic
+            item.reps = 0;
+            item.interval = 1; // Reset to 1 step
+            item.ef = Math.max(1.3, item.ef - 0.2); // Decrease easiness
+          }
+
+          // Schedule next review
+          item.due = this.sessionStep + item.interval;
+        },
+
+        /* --- UI RENDER --- */
+
+        switchTab(mode) {
+          document
+            .querySelectorAll(".tab")
+            .forEach((t) => t.classList.remove("active"));
+          const learnBox = document.getElementById("learnMode");
+          const testBox = document.getElementById("testMode");
+
+          if (mode === "learn") {
+            document.querySelectorAll(".tab")[0].classList.add("active");
+            learnBox.style.display = "block";
+            testBox.style.display = "none";
+            this.renderLearnList();
+          } else {
+            document.querySelectorAll(".tab")[1].classList.add("active");
+            learnBox.style.display = "none";
+            testBox.style.display = "block";
+            if (!this.currentItem) this.nextQuestion();
+          }
+        },
+
+        renderLearnList() {
+          const container = document.getElementById("wordListContent");
+          // Sort: Active first, then by mastery
+          const sorted = [...this.data].sort((a, b) => {
+            if (a.mastered && !b.mastered) return 1;
+            if (!a.mastered && b.mastered) return -1;
+            if (a.active && !b.active) return -1;
+            if (!a.active && b.active) return 1;
+            return 0;
+          });
+
+          container.innerHTML = sorted
+            .map((item) => {
+              let badgeClass = "badge-new";
+              let status = "New";
+              if (item.mastered) {
+                badgeClass = "badge-master";
+                status = "Mastered";
+              } else if (item.active) {
+                badgeClass = "badge-learning";
+                status = `Lvl ${item.reps}`;
+              }
+
+              return `
+                <div class="word-item">
+                  <div>
+                    <div class="word-en">${item.w}</div>
+                    <div class="word-vi">${item.m}</div>
+                  </div>
+                  <div class="srs-badge ${badgeClass}">${status}</div>
+                </div>`;
+            })
+            .join("");
+        },
+
+        updateStats() {
+          const mastered = this.data.filter((i) => i.mastered).length;
+          const learning = this.data.filter(
+            (i) => i.active && !i.mastered,
+          ).length;
+          const due = this.data.filter(
+            (i) => i.active && !i.mastered && i.due <= this.sessionStep,
+          ).length;
+
+          document.getElementById("statMastered").innerText = mastered;
+          document.getElementById("statLearning").innerText = learning;
+          document.getElementById("statDue").innerText = due;
+        },
+
+        nextQuestion() {
+          this.isAnswered = false;
+          this.sessionStep++; // Time moves forward
+
+          // Animation Reset
+          const quizContainer = document.getElementById("quizContainer");
+          quizContainer.classList.remove("animate-pop");
+          void quizContainer.offsetWidth;
+          quizContainer.classList.add("animate-pop");
+
+          document.getElementById("testFeedback").className = "feedback-msg"; // Hide feedback
+
+          this.currentItem = this.pickNext();
+
+          if (!this.currentItem) {
+            // Victory Condition
+            quizContainer.innerHTML = `
+                    <div style='text-align:center; padding:40px 0;'>
+                        <div style="font-size:60px; margin-bottom:20px;">🏆</div>
+                        <h2 style="color:var(--correct);">Hoàn thành xuất sắc!</h2>
+                        <p style="color:var(--text-sub);">Bạn đã thuộc hết từ vựng trong bộ này.</p>
+                        <button class='opt-btn' style='justify-content:center; margin:20px auto;' onclick='location.reload()'>Học lại từ đầu</button>
+                    </div>`;
+            return;
+          }
+
+          this.renderLayout();
+          this.updateStats();
+        },
+
+        renderLayout() {
+          const qLabel = document.getElementById("qLabel");
+          const qContent = document.getElementById("qContent");
+          const optContainer = document.getElementById("testOptions");
+          optContainer.innerHTML = "";
+
+          // Determine question type based on mastery level
+          // Low reps -> Choice. High reps -> Typing/Listening
+          let typeProb = Math.random();
+          if (this.currentItem.reps < 1)
+            this.currentType = typeProb > 0.3 ? 0 : 2; // Mostly translate VN
+          else if (this.currentItem.reps < 3)
+            this.currentType = Math.floor(Math.random() * 3); // Mix
+          else this.currentType = 3; // Force typing for almost mastered
+
+          // Generate Distractors
+          let distractors = this.data
+            .filter((i) => i.w !== this.currentItem.w)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3);
+
+          let options = [this.currentItem, ...distractors].sort(
+            () => Math.random() - 0.5,
+          );
+
+          switch (this.currentType) {
+            case 0: // En -> Vi
+              qLabel.innerText = "Chọn nghĩa đúng";
+              qContent.innerHTML = `<span class="q-word-main" style="color:var(--accent)">${this.currentItem.w}</span>`;
+              options.forEach((opt, idx) =>
+                this.createBtn(
+                  opt.m,
+                  opt === this.currentItem,
+                  idx + 1,
+                  optContainer,
+                ),
+              );
+              break;
+            case 1: // Vi -> En
+              qLabel.innerText = "Chọn từ tiếng Anh";
+              qContent.innerHTML = `<span class="q-word-main" style="font-size:24px">${this.currentItem.m}</span>`;
+              options.forEach((opt, idx) =>
+                this.createBtn(
+                  opt.w,
+                  opt === this.currentItem,
+                  idx + 1,
+                  optContainer,
+                ),
+              );
+              break;
+            case 2: // Listen
+              qLabel.innerText = "Nghe và chọn từ";
+              qContent.innerHTML = `<button class="listen-btn" onclick="app.speak('${this.currentItem.w}')"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>`;
+              options.forEach((opt, idx) =>
+                this.createBtn(
+                  opt.w,
+                  opt === this.currentItem,
+                  idx + 1,
+                  optContainer,
+                ),
+              );
+              setTimeout(() => this.speak(this.currentItem.w), 300);
+              break;
+            case 3: // Typing
+              qLabel.innerText = "Gõ lại từ vựng";
+              qContent.innerHTML = `<span class="q-word-main" style="font-size:24px">${this.currentItem.m}</span>`;
+              optContainer.innerHTML = `<input type="text" id="typeInput" class="type-input" placeholder="Nhập từ tiếng Anh..." autocomplete="off">`;
+              setTimeout(
+                () => document.getElementById("typeInput").focus(),
+                100,
+              );
+              break;
+          }
+        },
+
+        createBtn(text, isCorrect, idx, container) {
           const btn = document.createElement("button");
-          btn.innerText = opt;
-          btn.onclick = () => check(idx, item.a, btn, item);
-          optDiv.appendChild(btn);
-        });
-      }
-      function check(selected, correct, btn, item) {
-        const btns = document.querySelectorAll("#optContainer button");
-        btns.forEach((b) => (b.disabled = true));
+          btn.className = "opt-btn";
+          btn.id = `btn-${idx}`;
+          btn.innerHTML = `<span>${text}</span> <span class="opt-shortcut">${idx}</span>`;
+          btn.onclick = () => this.checkAnswer(isCorrect, btn);
+          container.appendChild(btn);
+        },
 
-        if (selected === correct) {
-          btn.classList.add("correct");
-          score++;
-        } else {
-          btn.classList.add("wrong");
+        checkAnswer(correct, element = null) {
+          if (this.isAnswered) return;
+          this.isAnswered = true;
 
-          btns[correct].classList.add("correct");
-        }
+          // UI Feedback
+          const feedback = document.getElementById("testFeedback");
+          feedback.classList.add("show");
 
-        document.getElementById("feedback").style.display = "block";
-        document.getElementById("nextBtn").style.display = "block";
-      }
+          if (element) {
+            element.style.borderColor = correct
+              ? "var(--correct)"
+              : "var(--wrong)";
+            element.style.background = correct
+              ? "rgba(52,199,89,0.1)"
+              : "rgba(255,59,48,0.1)";
+            // Disable all buttons
+            document
+              .querySelectorAll(".opt-btn")
+              .forEach((b) => (b.disabled = true));
+          }
 
-      function nextQ() {
-        currentIdx++;
-        render();
-      }
+          if (correct) {
+            feedback.innerHTML =
+              "<span style='color:var(--correct)'>Chính xác! +1 Rep</span>";
+            if (this.currentType !== 2) this.speak(this.currentItem.w);
+          } else {
+            feedback.innerHTML = `Sai rồi. Đáp án: <span style='color:var(--wrong)'>${this.currentItem.w}</span>`;
+            this.speak(this.currentItem.w);
+          }
 
-      init();
+          // SRS Update Logic
+          this.processResult(correct);
+
+          setTimeout(() => this.nextQuestion(), correct ? 1000 : 2500);
+        },
+
+        checkTyping() {
+          if (this.currentType !== 3) return;
+          const input = document.getElementById("typeInput");
+          if (!input) return;
+
+          const val = input.value.trim().toLowerCase();
+          const correct = val === this.currentItem.w.toLowerCase();
+
+          input.style.borderColor = correct ? "var(--correct)" : "var(--wrong)";
+          input.disabled = true;
+          this.checkAnswer(correct, null);
+        },
+
+        speak(text) {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = "en-US";
+          u.rate = 0.9;
+          window.speechSynthesis.speak(u);
+        },
+
+        setupShortcuts() {
+          document.addEventListener("keydown", (e) => {
+            if (document.getElementById("testMode").style.display === "none")
+              return;
+            if (this.isAnswered) return;
+
+            if (this.currentType === 3 && e.key === "Enter") {
+              this.checkTyping();
+              return;
+            }
+
+            if (
+              ["1", "2", "3", "4"].includes(e.key) &&
+              this.currentType !== 3
+            ) {
+              const btn = document.getElementById(`btn-${e.key}`);
+              if (btn) btn.click();
+            }
+          });
+        },
+      };
+
+      // Start App
+      app.init();
     </script>
   </body>
 </html>
